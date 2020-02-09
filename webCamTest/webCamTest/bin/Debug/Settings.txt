@@ -1,0 +1,7 @@
+﻿ReverseCamera = 1
+LeftGauge = 2
+MiddleGauge = 3
+RightGauge = 0
+TemplatePics =@"C:\Users\chris\Desktop\"
+Morning = 6
+Evening = 23
