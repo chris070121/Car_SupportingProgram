@@ -77,9 +77,6 @@ namespace webCamTest
             }
         }
 
-      
-
-
         
         private void button3_Click(object sender, EventArgs e)
         {
@@ -98,7 +95,7 @@ namespace webCamTest
 
             //Moving Windows
             Start_MovingWindows movingWindows = new Start_MovingWindows();
-            //movingWindows.StartMovingWindows();
+            movingWindows.StartMovingWindows();
 
             ReadSettingsFile();
 
@@ -166,7 +163,6 @@ namespace webCamTest
                 {
                     eveningTime = Convert.ToInt32(result[1]);
                 }
-
 
             }
 

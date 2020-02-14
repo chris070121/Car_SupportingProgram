@@ -1,7 +1,7 @@
-﻿ReverseCamera = 1
-LeftGauge = 2
-MiddleGauge = 3
-RightGauge = 0
+﻿ReverseCamera = 0
+LeftGauge = 1
+MiddleGauge = 2
+RightGauge = 3
 TemplatePics =@"C:\Users\chris\Desktop\"
 Morning = 6
-Evening = 23
+Evening = 17

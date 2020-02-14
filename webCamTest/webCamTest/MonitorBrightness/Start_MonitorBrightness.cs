@@ -12,11 +12,20 @@ namespace webCamTest.MonitorBrightness
     {
         private TimeSpan morning = new TimeSpan(6, 0, 0); //10 o'clock
         private TimeSpan night = new TimeSpan(17, 0, 0); //12 o'clock
-        public void StartMonitorBrightness(IntPtr windowHandle, int morningTime, int eveningTime)
+        private IntPtr windowHandle;
+
+        public void StartMonitorBrightness(IntPtr _windowHandle, int morningTime, int eveningTime)
         {
             morning = new TimeSpan(morningTime, 0, 0); //10 o'clock
-            TimeSpan night = new TimeSpan(eveningTime, 0, 0); //12 o'clock
-            
+            night = new TimeSpan(eveningTime, 0, 0); //12 o'clock
+            windowHandle = _windowHandle;
+
+            Thread monitor = new Thread(MonitorBrightnessProcedure);
+            monitor.Start();
+        }
+
+        private void MonitorBrightnessProcedure()
+        {
             BrightnessController br = new BrightnessController(windowHandle);
             TcpClient client = new TcpClient();
             NetworkStream stream = null;
@@ -30,7 +39,7 @@ namespace webCamTest.MonitorBrightness
                 Console.WriteLine("***********" + ey.Message);
             }
 
-            
+
             TimeSpan now = DateTime.Now.TimeOfDay;
             bool done = false;
 

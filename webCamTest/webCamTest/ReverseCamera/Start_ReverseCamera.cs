@@ -50,9 +50,16 @@ namespace webCamTest.ReverseCamera
         {
             while (true)
             {
-                _sourceReverse = capture.QueryFrame().ToImage<Bgr, byte>();
-                //pictureBox1.Image = matImage.Bitmap; // Directly show Mat object in *ImageBox*
-                reverseCamPB.Image = _sourceReverse.Bitmap; // Show Image<,> object in *ImageBox*            
+                try
+                {
+                    _sourceReverse = capture.QueryFrame().ToImage<Bgr, byte>();
+                    //pictureBox1.Image = matImage.Bitmap; // Directly show Mat object in *ImageBox*
+                    reverseCamPB.Image = _sourceReverse.Bitmap; // Show Image<,> object in *ImageBox*            
+                }
+                catch(Exception ex)
+                {
+                    Console.WriteLine(ex);
+                }
             }
         }
 
