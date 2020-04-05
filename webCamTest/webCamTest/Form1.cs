@@ -7,12 +7,13 @@ using webCamTest.MonitorBrightness;
 using webCamTest.MovingWindows;
 using webCamTest.ReverseCamera;
 using webCamTest.ScreenCompare;
+using System.Collections.Concurrent;
+using System.Threading;
 
 namespace webCamTest
 {
     public partial class Form1 : Form
     {
-        private Start_ScreenCompare start_ScreenCompare;
         private Rectangle workingRectangle;
         private int ReversCamera = 0;
         private int LeftGaugeIndex = 1;
@@ -22,6 +23,10 @@ namespace webCamTest
         private int eveningTime;
         private string templatePicPath;
         private bool showGauges = true;
+        private OpenCvVersion openCvVersionLeft;
+        private OpenCvVersion openCvVersionRight;
+        private OpenCvVersion openCvVersionMiddle;
+        private OpenCvVersion openCvVersionReverse;
 
         public Form1()
         {
@@ -94,28 +99,32 @@ namespace webCamTest
 
 
             //Moving Windows
-            Start_MovingWindows movingWindows = new Start_MovingWindows();
-            movingWindows.StartMovingWindows();
+            //Start_MovingWindows movingWindows = new Start_MovingWindows();
+            //movingWindows.StartMovingWindows();
 
             ReadSettingsFile();
 
             //Start Streming Gauges
-            start_ScreenCompare = new Start_ScreenCompare();
-            start_ScreenCompare.SetCamIndex(LeftGaugeIndex, MiddleGaugeIndex, RightGaugeIndex, templatePicPath);
-            start_ScreenCompare.StartCamera(leftGuagePicBx, middleGuagePicBx, rightGuagePicBx);
-
-            //Start Reverse Camera
             SetUpReverseCameraPicBx();
-            Start_ReverseCamera start_ReverseCamera = new Start_ReverseCamera();
-            start_ReverseCamera.SetCamIndex(ReversCamera);
-            start_ReverseCamera.StartReverseCamera(reverseCamPicBx);
+            openCvVersionLeft = new OpenCvVersion("Left", LeftGaugeIndex, leftGuagePicBx, this);
+            //openCvVersionRight = new OpenCvVersion("Right", RightGaugeIndex, rightGuagePicBx);
+            //openCvVersionMiddle = new OpenCvVersion("Middle", MiddleGaugeIndex, middleGuagePicBx);
+            //openCvVersionReverse = new OpenCvVersion("Reverse", ReversCamera, reverseCamPicBx, this);
+
+
+
+            ////Start Reverse Camera
+            //Start_ReverseCamera start_ReverseCamera = new Start_ReverseCamera();
+            //start_ReverseCamera.SetCamIndex(ReversCamera);
+            //start_ReverseCamera.StartReverseCamera(reverseCamPicBx);
 
 
             //Start Brightness Monitoring
-            IntPtr windowHandle = this.Handle;
-            Start_MonitorBrightness start_MonitorBrightness = new Start_MonitorBrightness();
-            start_MonitorBrightness.StartMonitorBrightness(windowHandle, morningTime, eveningTime);
+            //IntPtr windowHandle = this.Handle;
+            //Start_MonitorBrightness start_MonitorBrightness = new Start_MonitorBrightness();
+            //start_MonitorBrightness.StartMonitorBrightness(windowHandle, morningTime, eveningTime);
         }
+
 
 
         private void SetUpReverseCameraPicBx()
@@ -193,17 +202,17 @@ namespace webCamTest
 
         private void button2_Click(object sender, EventArgs e)
         {
-            start_ScreenCompare.CaptureOrigImage(leftGuagePicBx);
+            openCvVersionLeft.takePic = true;
         }
 
         private void CaptureMiddletGaugeBtn_Click(object sender, EventArgs e)
         {
-            start_ScreenCompare.CaptureOrigImage(middleGuagePicBx);
+            openCvVersionMiddle.takePic = true;
         }
 
         private void CaptureRightGaugeBtn_Click(object sender, EventArgs e)
         {
-            start_ScreenCompare.CaptureOrigImage(rightGuagePicBx);
+            openCvVersionRight.takePic = true;
         }
     }
 }

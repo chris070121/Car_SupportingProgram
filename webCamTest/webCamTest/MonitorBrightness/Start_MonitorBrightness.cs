@@ -29,15 +29,15 @@ namespace webCamTest.MonitorBrightness
             BrightnessController br = new BrightnessController(windowHandle);
             TcpClient client = new TcpClient();
             NetworkStream stream = null;
-            try
-            {
-                client = new TcpClient("127.0.0.1", 9997);
-                stream = client.GetStream();
-            }
-            catch (Exception ey)
-            {
-                Console.WriteLine("***********" + ey.Message);
-            }
+            //try
+            //{
+            //    client = new TcpClient("127.0.0.1", 9997);
+            //    stream = client.GetStream();
+            //}
+            //catch (Exception ey)
+            //{
+            //    Console.WriteLine("***********" + ey.Message);
+            //}
 
 
             TimeSpan now = DateTime.Now.TimeOfDay;
@@ -45,29 +45,29 @@ namespace webCamTest.MonitorBrightness
 
             while (done == false)
             {
-                if (!client.Connected)
-                {
-                    try
-                    {
-                        client = new TcpClient("127.0.0.1", 9997);
-                        stream = client.GetStream();
-                    }
-                    catch (Exception ex)
-                    {
-                        Console.WriteLine("***********" + ex.Message);
-                    }
-                }
-                else
-                {
+                //if (!client.Connected)
+                //{
+                //    try
+                //    {
+                //        client = new TcpClient("127.0.0.1", 9997);
+                //        stream = client.GetStream();
+                //    }
+                //    catch (Exception ex)
+                //    {
+                //        Console.WriteLine("***********" + ex.Message);
+                //    }
+               // }
+               // else
+               // {
                     try
                     {
                         if ((now > morning) && (now < night))
                         {
 
                             string msg = "BrightnessUp";
-                            int size = Encoding.ASCII.GetBytes(msg).Length;
-                            stream.Write(Encoding.ASCII.GetBytes(msg), 0, size);
-                            stream.Close();
+                            //int size = Encoding.ASCII.GetBytes(msg).Length;
+                            //stream.Write(Encoding.ASCII.GetBytes(msg), 0, size);
+                            //stream.Close();
                             br.SetBrightness(100);
                             done = true;
                         }
@@ -75,8 +75,8 @@ namespace webCamTest.MonitorBrightness
                         {
                             string msg = "BrightnessDown";
                             int size = Encoding.ASCII.GetBytes(msg).Length;
-                            stream.Write(Encoding.ASCII.GetBytes(msg), 0, size);
-                            stream.Close();
+                            //stream.Write(Encoding.ASCII.GetBytes(msg), 0, size);
+                            //stream.Close();
                             br.SetBrightness(0);
 
                             done = true;
@@ -87,7 +87,7 @@ namespace webCamTest.MonitorBrightness
                     {
                         Console.WriteLine(x.Message);
                     }
-                }
+              //  }
 
                 //10 minutes
                 Thread.Sleep(600000);

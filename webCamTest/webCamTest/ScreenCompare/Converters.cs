@@ -6,22 +6,24 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.IO;
 
 namespace webCamTest
 {
     public static class Converters
     {
-        public static Bitmap processingImages(TemplateObject temp, Image<Bgr, byte> source)
+        public static void processingImages(TemplateObject templateObject, Bitmap source, out Bitmap imageToShow, out string message)
         {
-            Image<Bgr, byte> imageToShow = new Image<Bgr, byte>(@"C:\Users\chris\Desktop\origImage.png");
+            Image<Bgr, byte> temp = new Image<Bgr, byte>(source);
+            string messageTemp = "";
             if (temp != null)
             {
-                if (source != null)
+                if (source != null && File.Exists(templateObject.filepath))
                 {
-                    Image<Bgr, byte> template = new Image<Bgr, byte>(temp.filepath);
-                    imageToShow = source.Copy();
+                    Image<Bgr, byte> template = new Image<Bgr, byte>(templateObject.filepath);
 
-                    using (Image<Gray, float> result = source.MatchTemplate(template, Emgu.CV.CvEnum.TemplateMatchingType.CcoeffNormed))
+
+                    using (Image<Gray, float> result = temp.MatchTemplate(template, Emgu.CV.CvEnum.TemplateMatchingType.CcoeffNormed))
                     {
                         double[] minValues, maxValues;
                         System.Drawing.Point[] minLocations, maxLocations;
@@ -32,17 +34,18 @@ namespace webCamTest
                         {
                             // This is a match. Do something with it, for example draw a rectangle around it.
                             Rectangle match = new Rectangle(maxLocations[0], template.Size);
-                            imageToShow.Draw(match, new Bgr(temp.color), 3);
-                            Console.WriteLine(temp.proMessage);
+                            temp.Draw(match, new Bgr(templateObject.color), 3);
+                            messageTemp = templateObject.proMessage;
                         }
                         else
                         {
-                            Console.WriteLine(temp.badMessage);
+                            messageTemp = templateObject.badMessage;
                         }
                     }
                 }
             }
-            return imageToShow.ToBitmap();
+            message = messageTemp;
+            imageToShow = temp.ToBitmap();
 
         }
     }
