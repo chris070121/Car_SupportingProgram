@@ -81,7 +81,6 @@
     <Compile Include="MonitorBrightness\BrightnessController.cs" />
     <Compile Include="MonitorBrightness\Start_MonitorBrightness.cs" />
     <Compile Include="MovingWindows\Start_MovingWindows.cs" />
-    <Compile Include="ReverseCamera\Start_ReverseCamera.cs" />
     <Compile Include="ScreenCompare\Converters.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
@@ -123,6 +122,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="License-LGPL.txt" />
+    <Compile Include="ScreenCompare\CropAndSendBitmap.cs" />
     <None Include="Settings.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

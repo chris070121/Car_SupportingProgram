@@ -23,67 +23,74 @@ namespace webCamTest.ScreenCompare
         static int counter = 0;
         public static void findImage(string name, Bitmap _source, out Bitmap imageToShow, out string message)
         {
-            //if (name == "Left")
-            //{
+            Bitmap temp = null;
+            string tempMessage = "";
+
+            if (name == "Left")
+            {
                 if (counter == 0)
                 {
                     counter++;
-                    Converters.processingImages(EmergencyBrake(), _source, out imageToShow, out message);
-                    return;
+                    Converters.processingImages(EmergencyBrake(), _source, out temp, out tempMessage);
                 }
                 else 
                 {
                     counter = 0;
-                    Converters.processingImages(LeftTurnSignal(), _source, out imageToShow, out message);
-                    return;
+                    Converters.processingImages(LeftTurnSignal(), _source, out temp, out tempMessage);
+                }
+            }
+            if (name == "Right")
+            {
+                if (counter == 0)
+                {
+                    counter++;
+                    Converters.processingImages(RightTurnSignal(), _source, out temp, out tempMessage);
+                }
+                else
+                {
+                    counter = 0;
+                    Converters.processingImages(SeatBeltSymbol(), _source, out temp, out tempMessage);
+                }
+
+            }
+            if (name == "Middle")
+            {
+                if (counter == 0)
+                {
+                    counter++;
+                    Converters.processingImages(ReverseSymbol(), _source, out temp, out tempMessage);
+
 
                 }
-            //}
-            //if (name == "Right")
-            //{
-            //    if (counter == 0)
-            //    {
-            //        counter++;
-            //        return Converters.processingImages(RightTurnSignal(), _source);
-            //    }
-            //    else
-            //    {
-            //        counter = 0;
-            //        return Converters.processingImages(SeatBeltSymbol(), _source);
-            //    }
+                else if (counter == 1)
+                {
+                    counter = 0;
+                    Converters.processingImages(LightSymbol(), _source, out temp, out tempMessage);
 
-            //}
-            //if (name == "Middle")
-            //{
-            //    if (counter == 0)
-            //    {
-            //        counter++;
-            //        return Converters.processingImages(ParkSymbol(), _source);
-            //    }
-            //    else if (counter == 1)
-            //    {
-            //        counter++;
-            //        return Converters.processingImages(ReverseSymbol(), _source);
-            //    }
-            //    else if (counter == 2)
-            //    {
-            //        counter++;
-            //        return Converters.processingImages(NeutralSymbol(), _source);
-            //    }
-            //    else if (counter == 3)
-            //    {
-            //        counter++;
-            //        return Converters.processingImages(DriveSymbol(), _source);
-            //    }
-            //    else if (counter == 4)
-            //    {
-            //        counter = 0;
-            //        return Converters.processingImages(LightSymbol(), _source);
-            //    }
-            //}
-        
-            // return _source;
-           
+                }
+                //else if (counter == 2)
+                //{
+                //    counter++;
+                //    Converters.processingImages(NeutralSymbol(), _source, out temp, out tempMessage);
+                //}
+                //else if (counter == 3)
+                //{
+                //    counter++;
+                //    Converters.processingImages(DriveSymbol(), _source, out temp, out tempMessage);
+                //}
+                //else if (counter == 4)
+                //{
+                //   
+                //    Converters.processingImages(ParkSymbol(), _source, out temp, out tempMessage);
+
+                //}
+            }
+            if(name == "Reverse")
+            {
+                temp = _source;
+            }
+            message = tempMessage;
+            imageToShow = temp;
         }
 
 

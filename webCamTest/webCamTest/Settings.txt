@@ -1,6 +1,6 @@
-﻿ReverseCamera = 1
+﻿ReverseCamera = 3
 LeftGauge = 0
-MiddleGauge = 3
+MiddleGauge = 1
 RightGauge = 2
 Morning = 6
 Evening = 17

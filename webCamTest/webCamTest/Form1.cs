@@ -5,10 +5,10 @@ using System.Windows.Forms;
 using System.Windows.Interop;
 using webCamTest.MonitorBrightness;
 using webCamTest.MovingWindows;
-using webCamTest.ReverseCamera;
 using webCamTest.ScreenCompare;
-using System.Collections.Concurrent;
 using System.Threading;
+using System.Net.Sockets;
+using System.Text;
 
 namespace webCamTest
 {
@@ -99,33 +99,65 @@ namespace webCamTest
 
 
             //Moving Windows
-            //Start_MovingWindows movingWindows = new Start_MovingWindows();
-            //movingWindows.StartMovingWindows();
+            Start_MovingWindows movingWindows = new Start_MovingWindows();
+            movingWindows.StartMovingWindows();
 
             ReadSettingsFile();
 
             //Start Streming Gauges
             SetUpReverseCameraPicBx();
             openCvVersionLeft = new OpenCvVersion("Left", LeftGaugeIndex, leftGuagePicBx, this);
-            //openCvVersionRight = new OpenCvVersion("Right", RightGaugeIndex, rightGuagePicBx);
-            //openCvVersionMiddle = new OpenCvVersion("Middle", MiddleGaugeIndex, middleGuagePicBx);
-            //openCvVersionReverse = new OpenCvVersion("Reverse", ReversCamera, reverseCamPicBx, this);
-
-
-
-            ////Start Reverse Camera
-            //Start_ReverseCamera start_ReverseCamera = new Start_ReverseCamera();
-            //start_ReverseCamera.SetCamIndex(ReversCamera);
-            //start_ReverseCamera.StartReverseCamera(reverseCamPicBx);
-
+            openCvVersionRight = new OpenCvVersion("Right", RightGaugeIndex, rightGuagePicBx,this);
+            openCvVersionMiddle = new OpenCvVersion("Middle", MiddleGaugeIndex, middleGuagePicBx, this);
+            openCvVersionReverse = new OpenCvVersion("Reverse", ReversCamera, reverseCamPicBx, this);
 
             //Start Brightness Monitoring
             //IntPtr windowHandle = this.Handle;
             //Start_MonitorBrightness start_MonitorBrightness = new Start_MonitorBrightness();
             //start_MonitorBrightness.StartMonitorBrightness(windowHandle, morningTime, eveningTime);
+
+            Thread thread = new Thread(SendMessages);
+            thread.Start();
         }
 
+        int port = 9999;
+        private void SendMessages()
+        {
+            TcpClient client = null;
+            NetworkStream nwStream = null;
 
+            while (true)
+            {
+                if (client != null && client.Connected && openCvVersionLeft.message != null)
+                {
+                    try
+                    {
+                        string sendMes = openCvVersionLeft.message + " , " + openCvVersionRight.message + " , " + openCvVersionMiddle.message; 
+                        byte[] bytesMiddle = ASCIIEncoding.ASCII.GetBytes(sendMes);
+                        nwStream.Write(bytesMiddle, 0, bytesMiddle.Length);
+                       // nwStream.Close();
+                    }
+                    catch(Exception ex)
+                    {
+                        Console.WriteLine(ex.Message);
+                    }
+                }
+                else
+                {
+                    try
+                    {
+                        client = new TcpClient("127.0.0.1", port);
+                        nwStream = client.GetStream();
+
+                    }
+                    catch(Exception ex)
+                    {
+                        Console.WriteLine(ex.Message);
+                    }
+                }
+            }
+
+        }
 
         private void SetUpReverseCameraPicBx()
         {

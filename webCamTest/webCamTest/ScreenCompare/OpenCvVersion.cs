@@ -20,7 +20,7 @@ namespace webCamTest.ScreenCompare
         public bool takePic = false;
         int camIndex;
         private PictureBox pictureBox;
-        private string message;
+        public string message;
         private Form1 mainWindow;
 
         public OpenCvVersion(string _name, int _camIndex, PictureBox _pictureBox, Form1 _mainWindow)
@@ -30,6 +30,7 @@ namespace webCamTest.ScreenCompare
             name = _name;
             camIndex = _camIndex;
             CaptureCamera();
+
         }
 
 
@@ -37,6 +38,11 @@ namespace webCamTest.ScreenCompare
         {
             camera = new Thread(new ThreadStart(CaptureCameraCallback));
             camera.Start();
+            if(name == "Left")
+            {
+                Thread a = new Thread(SendBitmapOverTCP);
+                a.Start();
+            }
         }
         private void CaptureCameraCallback()
         {
@@ -59,15 +65,17 @@ namespace webCamTest.ScreenCompare
             
         }
         int counter = 0;
+        Bitmap imageToShow;
 
         private void ProcessFrames(Bitmap bitmap)
         {
+            string temp = "";
             if (bitmap != null)
             {
-                Bitmap imageToShow;
-                if (counter % 15 == 0)
+                if (counter % 5 == 0)
                 {
-                    Start_ScreenCompare.findImage(name, bitmap, out imageToShow, out message);
+                    Start_ScreenCompare.findImage(name, bitmap, out imageToShow, out temp);
+                    message = temp;
                 }
                 else
                 {
@@ -87,26 +95,38 @@ namespace webCamTest.ScreenCompare
                 {
                     counter++;
                 }
-                Console.WriteLine(message);
 
-                if (message.Equals("EmergencyBrake = true"))
-                {
-                    mainWindow.Invoke((Action)delegate
-                    {
-                        mainWindow.BringToFront();
-                    });
-                }
-                else if (message.Equals("EmergencyBrake = false"))
-                {
+                //Console.WriteLine(message);
+
+
+                //if (message.Equals("EmergencyBrake = true"))
+                //{
+                //    mainWindow.Invoke((Action)delegate
+                //    {
+                //        mainWindow.BringToFront();
+                //    });
+                //}
+                //else if (message.Equals("EmergencyBrake = false"))
+                //{
                     
-                    mainWindow.Invoke((Action)delegate
-                    {
-                        mainWindow.SendToBack();
-                    });
-                }
+                //    mainWindow.Invoke((Action)delegate
+                //    {
+                //        mainWindow.SendToBack();
+                //    });
+                //}
 
             }
            
+        }
+
+        private void SendBitmapOverTCP()
+        {
+            CropAndSendBitmap cropAndSendBitmap = new CropAndSendBitmap();
+
+            while (true)
+            {
+                cropAndSendBitmap.SendBitmap(imageToShow);
+            }
         }
     }
 }

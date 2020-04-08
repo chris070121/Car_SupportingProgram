@@ -62,17 +62,17 @@ namespace webCamTest.MovingWindows
                         }
                     }
 
-                    if (RET.Contains("desktop-head-unit"))
-                    {
-                        ShowWindow(handle, 2);
+                    //if (RET.Contains("desktop-head-unit"))
+                    //{
+                    //    ShowWindow(handle, 2);
 
-                    }
+                    //}
 
-                    if (RET.Contains("Android Auto - Desktop Head Unit"))
-                    {
-                        Rectangle workingRectangle = Screen.PrimaryScreen.WorkingArea;
-                        MoveWindow(handle, -20, -30, (workingRectangle.Width + 40), workingRectangle.Height + 50, false);
-                    }
+                    //if (RET.Contains("Android Auto - Desktop Head Unit"))
+                    //{
+                    //    Rectangle workingRectangle = Screen.PrimaryScreen.WorkingArea;
+                    //    MoveWindow(handle, -20, -30, (workingRectangle.Width + 40), workingRectangle.Height + 50, false);
+                    //}
 
                     else
                     {
@@ -85,18 +85,18 @@ namespace webCamTest.MovingWindows
                         {
                             a = proc.MainWindowHandle;
 
-                            if (proc.MainWindowTitle == "Android Auto - Desktop Head Unit")
-                            {
-                                foreach (Screen x in allScreens)
-                                {
-                                    if (x.Primary == false)
-                                    {
-                                        workingRectangle = x.WorkingArea;
-                                        break;
-                                    }
-                                }
-                                MoveWindow(a, -3850, -35, workingRectangle.Width + 30, workingRectangle.Height + 50, true);
-                            }
+                            //if (proc.MainWindowTitle == "Android Auto - Desktop Head Unit")
+                            //{
+                            //    foreach (Screen x in allScreens)
+                            //    {
+                            //        if (x.Primary == false)
+                            //        {
+                            //            workingRectangle = x.WorkingArea;
+                            //            break;
+                            //        }
+                            //    }
+                            //    MoveWindow(a, -3850, -35, workingRectangle.Width + 30, workingRectangle.Height + 50, true);
+                            //}
 
                             workingRectangle = Screen.PrimaryScreen.WorkingArea;
 
@@ -138,8 +138,8 @@ namespace webCamTest.MovingWindows
             Thread a = new Thread(MoveWindowsIfHasFocus);
             a.Start();
 
-            //StartProgramAndMoveIt("chrome");
-            //StartProgramAndMoveIt("Spotify");
+            StartProgramAndMoveIt("chrome");
+            StartProgramAndMoveIt("Spotify");
 
 
             //while (true)
