@@ -38,11 +38,11 @@ namespace webCamTest.ScreenCompare
         {
             camera = new Thread(new ThreadStart(CaptureCameraCallback));
             camera.Start();
-            if(name == "Left")
-            {
-                Thread a = new Thread(SendBitmapOverTCP);
-                a.Start();
-            }
+            //if(name == "Middle")
+            //{
+            //    Thread a = new Thread(SendBitmapOverTCP);
+            //    a.Start();
+            //}
         }
         private void CaptureCameraCallback()
         {
@@ -72,7 +72,7 @@ namespace webCamTest.ScreenCompare
             string temp = "";
             if (bitmap != null)
             {
-                if (counter % 5 == 0)
+                if (counter % 2 == 0)
                 {
                     Start_ScreenCompare.findImage(name, bitmap, out imageToShow, out temp);
                     message = temp;
@@ -81,6 +81,12 @@ namespace webCamTest.ScreenCompare
                 {
                     imageToShow = bitmap;
                 }
+
+                if (name == "Middle")
+                {
+                    CropAndSendBitmap.SendBitmap(imageToShow);
+                }
+
 
                 pictureBox.Invoke((Action)delegate
                 {
@@ -119,14 +125,15 @@ namespace webCamTest.ScreenCompare
            
         }
 
-        private void SendBitmapOverTCP()
-        {
-            CropAndSendBitmap cropAndSendBitmap = new CropAndSendBitmap();
+        //private void SendBitmapOverTCP()
+        //{
+        //    CropAndSendBitmap cropAndSendBitmap = new CropAndSendBitmap();
+        //    while (true)
+        //    {
+        //        cropAndSendBitmap.SendBitmap(imageToShow);
+        //        Thread.Sleep(100);
 
-            while (true)
-            {
-                cropAndSendBitmap.SendBitmap(imageToShow);
-            }
-        }
+        //    }
+        //}
     }
 }
