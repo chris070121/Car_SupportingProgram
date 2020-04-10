@@ -27,6 +27,7 @@ namespace webCamTest
         private OpenCvVersion openCvVersionRight;
         private OpenCvVersion openCvVersionMiddle;
         private OpenCvVersion openCvVersionReverse;
+        private Start_MonitorBrightness start_MonitorBrightness;
 
         public Form1()
         {
@@ -112,9 +113,9 @@ namespace webCamTest
             openCvVersionReverse = new OpenCvVersion("Reverse", ReversCamera, reverseCamPicBx, this);
 
             //Start Brightness Monitoring
-            //IntPtr windowHandle = this.Handle;
-            //Start_MonitorBrightness start_MonitorBrightness = new Start_MonitorBrightness();
-            //start_MonitorBrightness.StartMonitorBrightness(windowHandle, morningTime, eveningTime);
+            IntPtr windowHandle = this.Handle;
+            start_MonitorBrightness = new Start_MonitorBrightness();
+            start_MonitorBrightness.StartMonitorBrightness(windowHandle, morningTime, eveningTime);
 
             Thread thread = new Thread(SendMessages);
             thread.Start();
@@ -123,42 +124,12 @@ namespace webCamTest
         int port = 9999;
         private void SendMessages()
         {
-            TcpClient client = null;
-            NetworkStream nwStream = null;
-
             while (true)
             {
-                string sendMes = openCvVersionLeft.message + " , " + openCvVersionRight.message + " , " + openCvVersionMiddle.message;
+                string sendMes = openCvVersionLeft.message + " , " + openCvVersionRight.message + " , " + 
+                    openCvVersionMiddle.message + " , " + start_MonitorBrightness.msg;
                 byte[] bytesMiddle = ASCIIEncoding.ASCII.GetBytes(sendMes);
                 CropAndSendBitmap.message = bytesMiddle;
-
-                //if (client != null && client.Connected && openCvVersionLeft.message != null)
-                //{
-                //    try
-                //    {
-                //        string sendMes = openCvVersionLeft.message + " , " + openCvVersionRight.message + " , " + openCvVersionMiddle.message; 
-                //        byte[] bytesMiddle = ASCIIEncoding.ASCII.GetBytes(sendMes);
-                //        nwStream.Write(bytesMiddle, 0, bytesMiddle.Length);
-                //       // nwStream.Close();
-                //    }
-                //    catch(Exception ex)
-                //    {
-                //        Console.WriteLine(ex.Message);
-                //    }
-                //}
-                //else
-                //{
-                //    try
-                //    {
-                //        client = new TcpClient("127.0.0.1", port);
-                //        nwStream = client.GetStream();
-
-                //    }
-                //    catch(Exception ex)
-                //    {
-                //        Console.WriteLine(ex.Message);
-                //    }
-                //}
             }
 
         }
