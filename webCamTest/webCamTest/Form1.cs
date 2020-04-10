@@ -128,33 +128,37 @@ namespace webCamTest
 
             while (true)
             {
-                if (client != null && client.Connected && openCvVersionLeft.message != null)
-                {
-                    try
-                    {
-                        string sendMes = openCvVersionLeft.message + " , " + openCvVersionRight.message + " , " + openCvVersionMiddle.message; 
-                        byte[] bytesMiddle = ASCIIEncoding.ASCII.GetBytes(sendMes);
-                        nwStream.Write(bytesMiddle, 0, bytesMiddle.Length);
-                       // nwStream.Close();
-                    }
-                    catch(Exception ex)
-                    {
-                        Console.WriteLine(ex.Message);
-                    }
-                }
-                else
-                {
-                    try
-                    {
-                        client = new TcpClient("127.0.0.1", port);
-                        nwStream = client.GetStream();
+                string sendMes = openCvVersionLeft.message + " , " + openCvVersionRight.message + " , " + openCvVersionMiddle.message;
+                byte[] bytesMiddle = ASCIIEncoding.ASCII.GetBytes(sendMes);
+                CropAndSendBitmap.message = bytesMiddle;
 
-                    }
-                    catch(Exception ex)
-                    {
-                        Console.WriteLine(ex.Message);
-                    }
-                }
+                //if (client != null && client.Connected && openCvVersionLeft.message != null)
+                //{
+                //    try
+                //    {
+                //        string sendMes = openCvVersionLeft.message + " , " + openCvVersionRight.message + " , " + openCvVersionMiddle.message; 
+                //        byte[] bytesMiddle = ASCIIEncoding.ASCII.GetBytes(sendMes);
+                //        nwStream.Write(bytesMiddle, 0, bytesMiddle.Length);
+                //       // nwStream.Close();
+                //    }
+                //    catch(Exception ex)
+                //    {
+                //        Console.WriteLine(ex.Message);
+                //    }
+                //}
+                //else
+                //{
+                //    try
+                //    {
+                //        client = new TcpClient("127.0.0.1", port);
+                //        nwStream = client.GetStream();
+
+                //    }
+                //    catch(Exception ex)
+                //    {
+                //        Console.WriteLine(ex.Message);
+                //    }
+                //}
             }
 
         }

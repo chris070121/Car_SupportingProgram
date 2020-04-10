@@ -43,6 +43,10 @@ namespace webCamTest
                         }
                     }
                 }
+                else
+                {
+                    messageTemp = templateObject.badMessage;
+                }
             }
             message = messageTemp;
             imageToShow = temp.ToBitmap();

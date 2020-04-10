@@ -1,6 +1,7 @@
 ﻿using OpenCvSharp;
 using OpenCvSharp.Extensions;
 using System;
+using System.Collections.Concurrent;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -33,15 +34,17 @@ namespace webCamTest.ScreenCompare
 
         }
 
-
+        //public ConcurrentDictionary<string, Bitmap> concurrentDictionary;
         private void CaptureCamera()
         {
             camera = new Thread(new ThreadStart(CaptureCameraCallback));
             camera.Start();
-            //if(name == "Middle")
+
+            //if (name == "Middle")
             //{
-            //    Thread a = new Thread(SendBitmapOverTCP);
-            //    a.Start();
+            //    concurrentDictionary = new ConcurrentDictionary<string, Bitmap>();
+            //    //Thread a = new Thread(SendBitmapOverTCP);
+            //    //a.Start();
             //}
         }
         private void CaptureCameraCallback()
@@ -85,9 +88,8 @@ namespace webCamTest.ScreenCompare
                 if (name == "Middle")
                 {
                     CropAndSendBitmap.SendBitmap(imageToShow);
+                    //concurrentDictionary.AddOrUpdate(name, imageToShow, (name, imageToShow) => imageToShow);
                 }
-
-
                 pictureBox.Invoke((Action)delegate
                 {
                     pictureBox.Image = imageToShow;
@@ -105,21 +107,21 @@ namespace webCamTest.ScreenCompare
                 //Console.WriteLine(message);
 
 
-                //if (message.Equals("EmergencyBrake = true"))
-                //{
-                //    mainWindow.Invoke((Action)delegate
-                //    {
-                //        mainWindow.BringToFront();
-                //    });
-                //}
-                //else if (message.Equals("EmergencyBrake = false"))
-                //{
-                    
-                //    mainWindow.Invoke((Action)delegate
-                //    {
-                //        mainWindow.SendToBack();
-                //    });
-                //}
+                if (message.Equals("ReverseSymbol = true"))
+                {
+                    mainWindow.Invoke((Action)delegate
+                    {
+                        mainWindow.BringToFront();
+                    });
+                }
+                else if (message.Equals("ReverseSymbol = false"))
+                {
+
+                    mainWindow.Invoke((Action)delegate
+                    {
+                        mainWindow.SendToBack();
+                    });
+                }
 
             }
            
@@ -127,11 +129,13 @@ namespace webCamTest.ScreenCompare
 
         //private void SendBitmapOverTCP()
         //{
-        //    CropAndSendBitmap cropAndSendBitmap = new CropAndSendBitmap();
+        //    //CropAndSendBitmap cropAndSendBitmap = new CropAndSendBitmap();
         //    while (true)
         //    {
-        //        cropAndSendBitmap.SendBitmap(imageToShow);
-        //        Thread.Sleep(100);
+        //        Bitmap x;
+        //        concurrentDictionary.TryGetValue("Middle", out x);
+        //        CropAndSendBitmap.SendBitmap(x);
+        //        //Thread.Sleep(100);
 
         //    }
         //}

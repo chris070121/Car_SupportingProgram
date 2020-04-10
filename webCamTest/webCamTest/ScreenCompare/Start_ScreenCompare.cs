@@ -59,14 +59,11 @@ namespace webCamTest.ScreenCompare
                 {
                     counter++;
                     Converters.processingImages(ReverseSymbol(), _source, out temp, out tempMessage);
-
-
                 }
                 else if (counter == 1)
                 {
                     counter = 0;
                     Converters.processingImages(LightSymbol(), _source, out temp, out tempMessage);
-
                 }
                 //else if (counter == 2)
                 //{
