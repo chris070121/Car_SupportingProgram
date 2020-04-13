@@ -15,13 +15,12 @@ namespace webCamTest.MovingWindows
 {
     class Start_MovingWindows
     {
+        public bool sendMainWindowForward = false;
 
         [DllImport("user32.dll", SetLastError = true)]
         internal static extern bool MoveWindow(IntPtr hWnd, int X, int Y, int nWidth, int nHeight, bool bRepaint);
 
-        //[DllImport("user32.dll", SetLastError = true)]
-        //static extern bool SetWindowPos(IntPtr hWnd, IntPtr hWndInsertAfter, int X, int Y, int cx, int cy, SetWindowPosFlags uFlags);
-
+     
         internal struct RECT
         {
             public int left;
@@ -29,8 +28,7 @@ namespace webCamTest.MovingWindows
             public int right;
             public int bottom;
         }
-        //[DllImport("USER32.DLL")]
-        //public static extern bool SetForegroundWindow(IntPtr hWnd);
+     
 
         [DllImport("user32.dll")]
         private static extern IntPtr GetForegroundWindow();
@@ -74,8 +72,8 @@ namespace webCamTest.MovingWindows
                     //    MoveWindow(handle, -20, -30, (workingRectangle.Width + 40), workingRectangle.Height + 50, false);
                     //}
 
-                    else
-                    {
+                    //else
+                    //{
                         Screen[] allScreens = Screen.AllScreens;
                         Rectangle workingRectangle = new Rectangle();
 
@@ -97,6 +95,7 @@ namespace webCamTest.MovingWindows
                             //    }
                             //    MoveWindow(a, -3850, -35, workingRectangle.Width + 30, workingRectangle.Height + 50, true);
                             //}
+                           
 
                             workingRectangle = Screen.PrimaryScreen.WorkingArea;
 
@@ -104,6 +103,13 @@ namespace webCamTest.MovingWindows
                             {
                                 MoveWindow(a, 295, 0, (workingRectangle.Width - 275), workingRectangle.Height + 10, true);
                             }
+
+                            if (proc.MainWindowTitle.Contains("CarSuppProgram"))
+                            {
+                       
+
+                        }
+
 
                             //if (proc.MainWindowTitle.Contains("Camera"))
                             //{
@@ -119,7 +125,7 @@ namespace webCamTest.MovingWindows
                                 MoveWindow(a, -10, 0, (325), workingRectangle.Height + 10, true);
                             }
 
-                        }
+                      //  }
                     }
                     //Console.Write(RET);
                 }
@@ -127,7 +133,7 @@ namespace webCamTest.MovingWindows
                 {
                     Console.Write("NO Windows Active");
                 }
-                Thread.Sleep(1000);
+                //Thread.Sleep(1000);
             }
         }
 

@@ -78,6 +78,18 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Gauges\Gauge.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Gauges\Gauge.Designer.cs">
+      <DependentUpon>Gauge.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Gauges\GaugeInfo.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Gauges\GaugeInfo.Designer.cs">
+      <DependentUpon>GaugeInfo.cs</DependentUpon>
+    </Compile>
     <Compile Include="MonitorBrightness\BrightnessController.cs" />
     <Compile Include="MonitorBrightness\Start_MonitorBrightness.cs" />
     <Compile Include="MovingWindows\Start_MovingWindows.cs" />
@@ -96,6 +108,12 @@
     <Compile Include="StartUpPrograms\RunStartUpPrograms.cs" />
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Gauges\Gauge.resx">
+      <DependentUpon>Gauge.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Gauges\GaugeInfo.resx">
+      <DependentUpon>GaugeInfo.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

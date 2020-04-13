@@ -128,7 +128,7 @@
             this.Controls.Add(this.SwitchBtn);
             this.Controls.Add(this.leftGuagePicBx);
             this.Name = "Form1";
-            this.Text = "Form1";
+            this.Text = "CarSuppProgram";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.Resize += new System.EventHandler(this.Form1_Resize);
             ((System.ComponentModel.ISupportInitialize)(this.leftGuagePicBx)).EndInit();

@@ -5,6 +5,7 @@ using System.Collections.Concurrent;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -34,42 +35,49 @@ namespace webCamTest.ScreenCompare
 
         }
 
-        //public ConcurrentDictionary<string, Bitmap> concurrentDictionary;
+        public ConcurrentDictionary<string, Bitmap> concurrentDictionary;
         private void CaptureCamera()
         {
             camera = new Thread(new ThreadStart(CaptureCameraCallback));
             camera.Start();
 
-            //if (name == "Middle")
-            //{
-            //    concurrentDictionary = new ConcurrentDictionary<string, Bitmap>();
-            //    //Thread a = new Thread(SendBitmapOverTCP);
-            //    //a.Start();
-            //}
         }
         private void CaptureCameraCallback()
         {
 
             frame = new Mat();
             capture = new VideoCapture(camIndex);
+            ////opens a settings window for the cameras
+
+            //if (name == "Middle")
+            //{
+            //    capture.Settings = 1;
+
+            //}
+
             capture.Open(camIndex);
 
             while (true)
             {
-                capture.Read(frame);
-                image = BitmapConverter.ToBitmap(frame);
-                if(takePic)
+                try
                 {
-                    Start_ScreenCompare.CaptureOrigImage(image, name);
-                    takePic = false;
+                    capture.Read(frame);
+                    image = BitmapConverter.ToBitmap(frame);
+                    if (takePic)
+                    {
+                        Start_ScreenCompare.CaptureOrigImage(image, name);
+                        takePic = false;
+                    }
+                    ProcessFrames(image);
                 }
-                ProcessFrames(image);
+                catch(Exception ex)
+                { }
             }
             
         }
         int counter = 0;
         Bitmap imageToShow;
-
+        public Bitmap finalImage;
         private void ProcessFrames(Bitmap bitmap)
         {
             string temp = "";
@@ -87,12 +95,25 @@ namespace webCamTest.ScreenCompare
 
                 if (name == "Middle")
                 {
-                    CropAndSendBitmap.SendBitmap(imageToShow);
-                    //concurrentDictionary.AddOrUpdate(name, imageToShow, (name, imageToShow) => imageToShow);
+                    finalImage = (Bitmap)imageToShow.Clone();
+                    //var Ocr = new IronOcr.AdvancedOcr();
+                    //Ocr.CleanBackgroundNoise = true;
+                    //Ocr.DetectWhiteTextOnDarkBackgrounds = true;
+                    //Ocr.EnhanceContrast = true;
+                    //Ocr.EnhanceResolution = true;
+                    //var Result = Ocr.Read(@"C:\Users\chris\Desktop\Car_SupportingProgram\webCamTest\webCamTest\bin\Debug\oilLife.png");
+                    //string temp1 = Regex.Replace(Result.Text, "[^a-zA-Z][^0-9]", " ");
+                    //Console.WriteLine(temp1);
+                    //// CropAndSendBitmap.SendBitmap();
+                    //concurrentDictionary.AddOrUpdate(name, imageToShow, (name, imageToShow)=>imageToShow);
                 }
                 pictureBox.Invoke((Action)delegate
                 {
                     pictureBox.Image = imageToShow;
+                    if (name != "Reverse")
+                    {
+                        pictureBox.Image.RotateFlip(RotateFlipType.Rotate90FlipNone);
+                    }
                 });
 
                 if (counter == 50)
@@ -107,37 +128,8 @@ namespace webCamTest.ScreenCompare
                 //Console.WriteLine(message);
 
 
-                if (message.Equals("ReverseSymbol = true"))
-                {
-                    mainWindow.Invoke((Action)delegate
-                    {
-                        mainWindow.BringToFront();
-                    });
-                }
-                else if (message.Equals("ReverseSymbol = false"))
-                {
-
-                    mainWindow.Invoke((Action)delegate
-                    {
-                        mainWindow.SendToBack();
-                    });
-                }
-
             }
            
         }
-
-        //private void SendBitmapOverTCP()
-        //{
-        //    //CropAndSendBitmap cropAndSendBitmap = new CropAndSendBitmap();
-        //    while (true)
-        //    {
-        //        Bitmap x;
-        //        concurrentDictionary.TryGetValue("Middle", out x);
-        //        CropAndSendBitmap.SendBitmap(x);
-        //        //Thread.Sleep(100);
-
-        //    }
-        //}
     }
 }
