@@ -11,12 +11,15 @@ using System.Net.Sockets;
 using System.Text;
 using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
+using webCamTest.Gauges;
 
 namespace webCamTest
 {
     public partial class Form1 : Form
     {
-        private Gauges.GaugeInfo gaugeInfoForm;
+        private GaugeInfo gaugeInfoForm;
+        private GaugeSymbols gaugeSymbolForm;
+
         private Rectangle workingRectangle;
         private int ReversCamera;
         private int LeftGaugeIndex;
@@ -129,12 +132,16 @@ namespace webCamTest
             start_MonitorBrightness = new Start_MonitorBrightness();
             start_MonitorBrightness.StartMonitorBrightness(windowHandle, morningTime, eveningTime);
 
-          
+            gaugeInfoForm = new GaugeInfo();
+            gaugeInfoForm.Show();
+
+            gaugeSymbolForm = new GaugeSymbols();
+            gaugeSymbolForm.Show();
+
             Thread thread = new Thread(SendMessagesAndUpdateGUI);
             thread.Start();
 
         }
-        Gauges.GaugeInfo gaugeInfo;
         [DllImport("user32.dll", SetLastError = true)]
         static extern bool SetWindowPos(IntPtr hWnd, IntPtr hWndInsertAfter, int X, int Y, int cx, int cy, SetWindowPosFlags uFlags);
         IntPtr windowHandle;

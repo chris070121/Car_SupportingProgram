@@ -11,16 +11,16 @@ using webCamTest.ScreenCompare;
 
 namespace webCamTest.ScreenCompare
 {
-    public static class Start_ScreenCompare
+    public class Start_ScreenCompare
     {
      
-        public static void CaptureOrigImage(Bitmap image, string name)
+        public  void CaptureOrigImage(Bitmap image, string name)
         {
             image.Save(name + "origImage.png", ImageFormat.Png);
         }
 
-        static int counter = 0;
-        public static void findImage(string name, Bitmap _source, out Bitmap imageToShow, out string message, out Bitmap croppedImage)
+         int counter = 0;
+        public  void findImage(string name, Bitmap _source, out Bitmap imageToShow, out string message, out Bitmap croppedImage)
         {
             Bitmap temp = null;
             string tempMessage = "";
@@ -39,7 +39,6 @@ namespace webCamTest.ScreenCompare
                         counter = 0;
                         Converters.processingImages(LeftTurnSignal(), _source, out temp, out tempMessage, out _croppedImage);
                     }
-
                 }
                 else if (name == "Right")
                 {
@@ -72,33 +71,25 @@ namespace webCamTest.ScreenCompare
                         counter++;
                         Converters.processingImages(ReverseSymbol(), _source, out temp, out tempMessage, out _croppedImage);
                     }
-                    else if (counter == 2)
+                }
+                else if (name == "TopMiddle")
+                {
+                    if (counter == 0)
                     {
                         counter++;
-                        Converters.processingImages(InformationSymbol(), _source, out temp, out tempMessage, out _croppedImage);
-
-                    }
-                    else if (counter == 3)
-                    {
-                        counter = 0;
                         Converters.processingImages(LightSymbol(), _source, out temp, out tempMessage, out _croppedImage);
                     }
-                    //else if (counter == 2)
-                    //{
-                    //    counter++;
-                    //    Converters.processingImages(NeutralSymbol(), _source, out temp, out tempMessage);
-                    //}
-                    //else if (counter == 3)
-                    //{
-                    //    counter++;
-                    //    Converters.processingImages(DriveSymbol(), _source, out temp, out tempMessage);
-                    //}
-                    //else if (counter == 4)
-                    //{
-                    //   
-                    //    Converters.processingImages(ParkSymbol(), _source, out temp, out tempMessage);
+                    else if (counter == 1)
+                    {
+                        counter++;
+                        Converters.processingImages(HighBeamLightSymbol(), _source, out temp, out tempMessage, out _croppedImage);
+                    }
+                    else if (counter == 2)
+                    {
+                        counter = 0;
+                        Converters.processingImages(GasLightSymbol(), _source, out temp, out tempMessage, out _croppedImage);
+                    }
 
-                    //}
                 }
                 if (name == "Reverse")
                 {
@@ -118,20 +109,21 @@ namespace webCamTest.ScreenCompare
 
 
 
-        private static  TemplateObject ebrake;
-        private static  TemplateObject leftTurnSignal;
-        private static  TemplateObject rightTurnSignal;
-        private static  TemplateObject parkSymbol;
-        private static  TemplateObject reverseSymbol;
-        private static  TemplateObject neutralSymbol;
-        private static  TemplateObject driveSymbol;
-        private static  TemplateObject lightSymbol;
-        private static  TemplateObject seatBeltSymbol;
-        private static TemplateObject infoSymbol;
-        private static TemplateObject checkEngineSymbol;
+        private  TemplateObject ebrake;
+        private  TemplateObject leftTurnSignal;
+        private  TemplateObject rightTurnSignal;
+        private  TemplateObject parkSymbol;
+        private  TemplateObject reverseSymbol;
+        private  TemplateObject neutralSymbol;
+        private  TemplateObject driveSymbol;
+        private  TemplateObject lightSymbol;
+        private  TemplateObject seatBeltSymbol;
+        private  TemplateObject infoSymbol;
+        private  TemplateObject checkEngineSymbol;
+        private  TemplateObject highBeamLightSymbol;
+        private TemplateObject gasLightSymbol;
 
-
-        private static TemplateObject EmergencyBrake()
+        private  TemplateObject EmergencyBrake()
         {
             if (ebrake == null)
             {
@@ -147,7 +139,23 @@ namespace webCamTest.ScreenCompare
             return ebrake;
         }
 
-        private static TemplateObject CheckEngine()
+        private TemplateObject GasLightSymbol()
+        {
+            if (gasLightSymbol == null)
+            {
+                string topic = "GasLightSymbol";
+
+                TemplateObject temp = new TemplateObject();
+                temp.filepath = topic + ".png";
+                temp.proMessage = topic + " = true";
+                temp.badMessage = topic + " = false";
+                temp.color = Color.Red;
+                gasLightSymbol = temp;
+            }
+            return gasLightSymbol;
+        }
+
+        private  TemplateObject CheckEngine()
         {
             if (checkEngineSymbol == null)
             {
@@ -163,7 +171,7 @@ namespace webCamTest.ScreenCompare
             return checkEngineSymbol;
         }
 
-        private static TemplateObject InformationSymbol()
+        private  TemplateObject InformationSymbol()
         {
             if (infoSymbol == null)
             {
@@ -179,7 +187,7 @@ namespace webCamTest.ScreenCompare
             return infoSymbol;
         }
 
-        private static TemplateObject LeftTurnSignal()
+        private  TemplateObject LeftTurnSignal()
         {
             if (leftTurnSignal == null)
             {
@@ -195,7 +203,7 @@ namespace webCamTest.ScreenCompare
             return leftTurnSignal;
         }
 
-        private static TemplateObject RightTurnSignal()
+        private  TemplateObject RightTurnSignal()
         {
             if (rightTurnSignal == null)
             {
@@ -211,7 +219,7 @@ namespace webCamTest.ScreenCompare
             return rightTurnSignal;
         }
 
-        private static TemplateObject ParkSymbol()
+        private  TemplateObject ParkSymbol()
         {
             if (parkSymbol == null)
             {
@@ -227,7 +235,7 @@ namespace webCamTest.ScreenCompare
             return parkSymbol;
         }
 
-        private static TemplateObject ReverseSymbol()
+        private  TemplateObject ReverseSymbol()
         {
             if (reverseSymbol == null)
             {
@@ -243,7 +251,7 @@ namespace webCamTest.ScreenCompare
             return reverseSymbol;
         }
 
-        private static TemplateObject NeutralSymbol()
+        private  TemplateObject NeutralSymbol()
         {
             if (neutralSymbol == null)
             {
@@ -259,7 +267,7 @@ namespace webCamTest.ScreenCompare
             return neutralSymbol;
         }
 
-        private static TemplateObject DriveSymbol()
+        private  TemplateObject DriveSymbol()
         {
             if (driveSymbol == null)
             {
@@ -275,7 +283,7 @@ namespace webCamTest.ScreenCompare
             return driveSymbol;
         }
 
-        private static TemplateObject LightSymbol()
+        private  TemplateObject LightSymbol()
         {
             if (lightSymbol == null)
             {
@@ -290,7 +298,22 @@ namespace webCamTest.ScreenCompare
             return lightSymbol;
         }
 
-        private static TemplateObject SeatBeltSymbol()
+        private  TemplateObject HighBeamLightSymbol()
+        {
+            if (highBeamLightSymbol == null)
+            {
+                string topic = "HiBeamLightSymbol";
+                TemplateObject temp = new TemplateObject();
+                temp.filepath = topic + ".png";
+                temp.proMessage = topic + "  = true";
+                temp.badMessage = topic + " = false";
+                temp.color = Color.Pink;
+                highBeamLightSymbol = temp;
+            }
+            return highBeamLightSymbol;
+        }
+
+        private  TemplateObject SeatBeltSymbol()
         {
             if (seatBeltSymbol == null)
             {

@@ -25,12 +25,15 @@ namespace webCamTest.ScreenCompare
         public string message;
         private Form1 mainWindow;
         public Bitmap croppedBitmap;
+        Start_ScreenCompare screenCompare;
+
         public OpenCvVersion(string _name, int _camIndex, PictureBox _pictureBox, Form1 _mainWindow)
         {
             mainWindow = _mainWindow;
             pictureBox = _pictureBox;
             name = _name;
             camIndex = _camIndex;
+            screenCompare = new Start_ScreenCompare();
             CaptureCamera();
 
         }
@@ -73,7 +76,7 @@ namespace webCamTest.ScreenCompare
                     image = BitmapConverter.ToBitmap(frame);
                     if (takePic)
                     {
-                        Start_ScreenCompare.CaptureOrigImage(image, name);
+                        screenCompare.CaptureOrigImage(image, name);
                         takePic = false;
                     }
                     ProcessFrames(image);
@@ -94,7 +97,7 @@ namespace webCamTest.ScreenCompare
             {
                 if (counter%2==0 && name != "Reverse")
                 {
-                    Start_ScreenCompare.findImage(name, bitmap, out imageToShow, out temp, out _croppedImage);
+                    screenCompare.findImage(name, bitmap, out imageToShow, out temp, out _croppedImage);
                     message = temp;
                     if (name == "BottomMiddle" && temp.Contains("Information"))
                     {
