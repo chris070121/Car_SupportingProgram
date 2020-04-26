@@ -50,13 +50,20 @@ namespace webCamTest.ScreenCompare
             capture.Fps = 60;
             ////opens a settings window for the cameras
 
-            if (name == "Middle")
+            if (name == "BottomMiddle" || name == "TopMiddle")
             {
-                //capture.Settings = 1;
+                capture.Settings = 1;
+
+            }
+            try
+            {
+                capture.Open(camIndex);
+            }
+            catch(Exception ex)
+            {
 
             }
 
-            capture.Open(camIndex);
 
             while (true)
             {
@@ -89,7 +96,7 @@ namespace webCamTest.ScreenCompare
                 {
                     Start_ScreenCompare.findImage(name, bitmap, out imageToShow, out temp, out _croppedImage);
                     message = temp;
-                    if (name == "Middle" && temp.Contains("Information"))
+                    if (name == "BottomMiddle" && temp.Contains("Information"))
                     {
                         croppedBitmap = _croppedImage;
                     }

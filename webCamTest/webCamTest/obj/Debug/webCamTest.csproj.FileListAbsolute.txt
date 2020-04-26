@@ -260,3 +260,5 @@ C:\Users\chris\Desktop\Car_SupportingProgram\webCamTest\webCamTest\obj\Debug\web
 C:\Users\chris\Desktop\Car_SupportingProgram\webCamTest\webCamTest\obj\Debug\webCamTest.pdb
 C:\Users\chris\Desktop\Car_SupportingProgram\webCamTest\webCamTest\obj\Debug\webCamTest.Gauges.Gauge.resources
 C:\Users\chris\Desktop\Car_SupportingProgram\webCamTest\webCamTest\obj\Debug\webCamTest.Gauges.GaugeInfo.resources
+C:\Users\Chris Davis\Desktop\Car_SupportingProgram\webCamTest\webCamTest\obj\Debug\webCamTest.Gauges.Gauge.resources
+C:\Users\Chris Davis\Desktop\Car_SupportingProgram\webCamTest\webCamTest\obj\Debug\webCamTest.Gauges.GaugeInfo.resources

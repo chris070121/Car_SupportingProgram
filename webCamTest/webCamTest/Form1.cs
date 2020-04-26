@@ -18,17 +18,21 @@ namespace webCamTest
     {
         private Gauges.GaugeInfo gaugeInfoForm;
         private Rectangle workingRectangle;
-        private int ReversCamera = 0;
-        private int LeftGaugeIndex = 1;
-        private int MiddleGaugeIndex = 2;
-        private int RightGaugeIndex = 3;
+        private int ReversCamera;
+        private int LeftGaugeIndex;
+        private int BottomMiddleGaugeIndex;
+        private int TopMiddleGaugeIndex;
+
+        private int RightGaugeIndex;
         private int morningTime;
         private int eveningTime;
         private string templatePicPath;
         private bool showGauges = false;
         private OpenCvVersion openCvVersionLeft;
         private OpenCvVersion openCvVersionRight;
-        private OpenCvVersion openCvVersionMiddle;
+        private OpenCvVersion openCvVersionBottomMiddle;
+        private OpenCvVersion openCvVersionTopMiddle;
+
         private OpenCvVersion openCvVersionReverse;
         private Start_MonitorBrightness start_MonitorBrightness;
 
@@ -43,13 +47,16 @@ namespace webCamTest
         private void InitializeStuff()
         {
             CaptureLeftGaugeBtn.Visible = false;
-            CaptureMiddletGaugeBtn.Visible = false;
+            CaptureBottomMiddletGaugeBtn.Visible = false;
+            CaptureTopMiddletGaugeBtn.Visible = false;
+
             CaptureRightGaugeBtn.Visible = false;
 
             reverseCamPicBx.Visible = true;
 
             leftGuagePicBx.Visible = false;
-            middleGuagePicBx.Visible = false;
+            bottomMiddleGuagePicBx.Visible = false;
+            topMiddleGuagePicBx.Visible = false;
             rightGuagePicBx.Visible = false;
         }
 
@@ -62,10 +69,14 @@ namespace webCamTest
                 reverseCamPicBx.Visible = false;
 
                 CaptureLeftGaugeBtn.Visible = true;
-                CaptureMiddletGaugeBtn.Visible = true;
+                CaptureBottomMiddletGaugeBtn.Visible = true;
+                CaptureTopMiddletGaugeBtn.Visible = true;
+
                 CaptureRightGaugeBtn.Visible = true;
                 leftGuagePicBx.Visible = true;
-                middleGuagePicBx.Visible = true;
+                bottomMiddleGuagePicBx.Visible = true;
+                topMiddleGuagePicBx.Visible = true;
+
                 rightGuagePicBx.Visible = true;
                 showGauges = false;
             }
@@ -76,10 +87,14 @@ namespace webCamTest
                 reverseCamPicBx.Visible = true;
                 
                 CaptureLeftGaugeBtn.Visible = false;
-                CaptureMiddletGaugeBtn.Visible = false;
+                CaptureBottomMiddletGaugeBtn.Visible = false;
+                CaptureTopMiddletGaugeBtn.Visible = false;
+
                 CaptureRightGaugeBtn.Visible = false;
                 leftGuagePicBx.Visible = false;
-                middleGuagePicBx.Visible = false;
+                bottomMiddleGuagePicBx.Visible = false;
+                topMiddleGuagePicBx.Visible = false;
+
                 rightGuagePicBx.Visible = false;
                 showGauges = true;
             }
@@ -104,7 +119,9 @@ namespace webCamTest
             SetUpReverseCameraPicBx();
             openCvVersionLeft = new OpenCvVersion("Left", LeftGaugeIndex, leftGuagePicBx, this);
             openCvVersionRight = new OpenCvVersion("Right", RightGaugeIndex, rightGuagePicBx,this);
-            openCvVersionMiddle = new OpenCvVersion("Middle", MiddleGaugeIndex, middleGuagePicBx, this);
+            openCvVersionBottomMiddle = new OpenCvVersion("BottomMiddle", BottomMiddleGaugeIndex, bottomMiddleGuagePicBx, this);
+            openCvVersionTopMiddle = new OpenCvVersion("TopMiddle", TopMiddleGaugeIndex, topMiddleGuagePicBx, this);
+
             openCvVersionReverse = new OpenCvVersion("Reverse", ReversCamera, reverseCamPicBx, this);
 
             ////Start Brightness Monitoring
@@ -123,15 +140,15 @@ namespace webCamTest
         IntPtr windowHandle;
         private void CheckReverseSymbol()
         {
-                if (openCvVersionMiddle.message != null && openCvVersionMiddle.message.Contains("ReverseSymbol"))
+                if (openCvVersionBottomMiddle.message != null && openCvVersionBottomMiddle.message.Contains("ReverseSymbol"))
                 {
-                    if (openCvVersionMiddle.message.Contains("true"))
+                    if (openCvVersionBottomMiddle.message.Contains("true"))
                     {
                        
                        SetWindowPos(windowHandle, (IntPtr)SpecialWindowHandles.HWND_TOP, 300, 0, (workingRectangle.Width / 2) + 420, workingRectangle.Height, SetWindowPosFlags.SWP_SHOWWINDOW);
                         
                     }
-                    else if (openCvVersionMiddle.message.Contains("false"))
+                    else if (openCvVersionBottomMiddle.message.Contains("false"))
                     {
                         SetWindowPos(windowHandle, (IntPtr)SpecialWindowHandles.HWND_BOTTOM, 300, 0, (workingRectangle.Width / 2) + 420, workingRectangle.Height, SetWindowPosFlags.SWP_SHOWWINDOW);
                     }
@@ -147,14 +164,14 @@ namespace webCamTest
                 try
                 {
                     string sendMes = openCvVersionLeft.message + " , " + openCvVersionRight.message + " , " +
-                                                                                                       openCvVersionMiddle.message + " , " + start_MonitorBrightness.msg;
-                    byte[] bytesMiddle = ASCIIEncoding.ASCII.GetBytes(sendMes);
-                    message = bytesMiddle;
-                    if (openCvVersionMiddle.croppedBitmap != null)
-                    {
-                      //  bitmap = openCvVersionMiddle.croppedBitmap;
+                                                                                                       openCvVersionBottomMiddle.message + " , " + openCvVersionTopMiddle.message + " , "  + start_MonitorBrightness.msg;
+                    //byte[] bytesMiddle = ASCIIEncoding.ASCII.GetBytes(sendMes);
+                    //message = bytesMiddle;
+                    //if (openCvVersionMiddle.croppedBitmap != null)
+                    //{
+                    //  //  bitmap = openCvVersionMiddle.croppedBitmap;
 
-                    }
+                    //}
                   // SendBitmap();
 
 
@@ -176,11 +193,17 @@ namespace webCamTest
 
                         });
 
-                     
-                        middleGuagePicBx.BeginInvoke((Action)delegate
+                        topMiddleGuagePicBx.BeginInvoke((Action)delegate
                         {
-                            middleGuagePicBx.Image = openCvVersionMiddle.finalImage;
-                            middleGuagePicBx.Image.RotateFlip(RotateFlipType.Rotate90FlipNone);
+                            topMiddleGuagePicBx.Image = openCvVersionTopMiddle.finalImage;
+                            topMiddleGuagePicBx.Image.RotateFlip(RotateFlipType.Rotate90FlipNone);
+
+                        });
+
+                        bottomMiddleGuagePicBx.BeginInvoke((Action)delegate
+                        {
+                            bottomMiddleGuagePicBx.Image = openCvVersionBottomMiddle.finalImage;
+                            bottomMiddleGuagePicBx.Image.RotateFlip(RotateFlipType.Rotate90FlipNone);
 
                         });
                       
@@ -273,27 +296,31 @@ namespace webCamTest
                 {
                     ReversCamera = Convert.ToInt32(result[1]);
                 }
-                if (line.Contains("Left"))
+                else if (line.Contains("Left"))
                 {
                     LeftGaugeIndex = Convert.ToInt32(result[1]);
                 }
-                if (line.Contains("Middle"))
+                else if (line.Contains("BottomMiddle"))
                 {
-                    MiddleGaugeIndex = Convert.ToInt32(result[1]);
+                    BottomMiddleGaugeIndex = Convert.ToInt32(result[1]);
                 }
-                if (line.Contains("Right"))
+                else if (line.Contains("TopMiddle"))
+                {
+                    TopMiddleGaugeIndex = Convert.ToInt32(result[1]);
+                }
+                else if (line.Contains("Right"))
                 {
                     RightGaugeIndex = Convert.ToInt32(result[1]);
                 }
-                if (line.Contains("Template"))
+                else if (line.Contains("Template"))
                 {
                     templatePicPath = result[1];
                 }
-                if (line.Contains("Morning"))
+                else if (line.Contains("Morning"))
                 {
                     morningTime = Convert.ToInt32(result[1]);
                 }
-                if (line.Contains("Evening"))
+                else if (line.Contains("Evening"))
                 {
                     eveningTime = Convert.ToInt32(result[1]);
                 }
@@ -308,12 +335,20 @@ namespace webCamTest
             leftGuagePicBx.Height = control.Size.Height;
             leftGuagePicBx.Width = control.Size.Width / 3;
 
-            middleGuagePicBx.Location = new Point(control.Size.Width / 3, 31);
-            middleGuagePicBx.SizeMode = PictureBoxSizeMode.StretchImage;
-            middleGuagePicBx.Height = control.Size.Height;
-            middleGuagePicBx.Width = control.Size.Width / 3;
-            middleGuagePicBx.BackColor = Color.Blue;
-          
+            bottomMiddleGuagePicBx.Location = new Point(control.Size.Width / 3, 31 + (control.Size.Height / 2));
+            bottomMiddleGuagePicBx.SizeMode = PictureBoxSizeMode.StretchImage;
+            bottomMiddleGuagePicBx.Height = control.Size.Height / 2;
+            bottomMiddleGuagePicBx.Width = control.Size.Width / 3;
+            bottomMiddleGuagePicBx.BackColor = Color.Black;
+
+
+            topMiddleGuagePicBx.Location = new Point(control.Size.Width / 3, 31);
+            topMiddleGuagePicBx.SizeMode = PictureBoxSizeMode.StretchImage;
+            topMiddleGuagePicBx.Height = control.Size.Height / 2;
+            topMiddleGuagePicBx.Width = control.Size.Width / 3;
+            topMiddleGuagePicBx.BackColor = Color.Blue;
+
+
             rightGuagePicBx.Location = new Point((control.Size.Width / 3) * 2, 31);
             rightGuagePicBx.SizeMode = PictureBoxSizeMode.StretchImage;
             rightGuagePicBx.Height = control.Size.Height;
@@ -324,11 +359,6 @@ namespace webCamTest
         private void button2_Click(object sender, EventArgs e)
         {
             openCvVersionLeft.takePic = true;
-        }
-
-        private void CaptureMiddletGaugeBtn_Click(object sender, EventArgs e)
-        {
-            openCvVersionMiddle.takePic = true;
         }
 
         private void CaptureRightGaugeBtn_Click(object sender, EventArgs e)
@@ -437,6 +467,16 @@ namespace webCamTest
             SWP_SHOWWINDOW = 0x0040,
 
             // ReSharper restore InconsistentNaming
+        }
+
+        private void CaptureBottomMiddletGaugeBtn_Click(object sender, EventArgs e)
+        {
+            openCvVersionBottomMiddle.takePic = true;
+        }
+
+        private void CaptureTopMiddletGaugeBtn_Click(object sender, EventArgs e)
+        {
+            openCvVersionTopMiddle.takePic = true;
         }
     }
 }

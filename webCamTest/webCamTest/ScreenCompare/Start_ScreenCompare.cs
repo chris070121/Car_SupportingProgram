@@ -59,7 +59,7 @@ namespace webCamTest.ScreenCompare
                         Converters.processingImages(SeatBeltSymbol(), _source, out temp, out tempMessage, out _croppedImage);
                     }
                 }
-                else if (name == "Middle")
+                else if (name == "BottomMiddle")
                 {
                     if (counter == 0)
                     {
