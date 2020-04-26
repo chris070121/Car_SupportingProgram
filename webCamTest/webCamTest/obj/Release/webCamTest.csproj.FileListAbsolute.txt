@@ -57,3 +57,5 @@ C:\Users\chris\Desktop\Car_SupportingProgram\webCamTest\webCamTest\obj\Release\w
 C:\Users\chris\Desktop\Car_SupportingProgram\webCamTest\webCamTest\obj\Release\webCamTest.csproj.CopyComplete
 C:\Users\chris\Desktop\Car_SupportingProgram\webCamTest\webCamTest\obj\Release\webCamTest.exe
 C:\Users\chris\Desktop\Car_SupportingProgram\webCamTest\webCamTest\obj\Release\webCamTest.pdb
+C:\Users\chris\Desktop\Car_SupportingProgram\webCamTest\webCamTest\obj\Release\webCamTest.Gauges.Gauge.resources
+C:\Users\chris\Desktop\Car_SupportingProgram\webCamTest\webCamTest\obj\Release\webCamTest.Gauges.GaugeInfo.resources

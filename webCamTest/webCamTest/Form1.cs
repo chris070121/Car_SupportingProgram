@@ -25,7 +25,7 @@ namespace webCamTest
         private int morningTime;
         private int eveningTime;
         private string templatePicPath;
-        private bool showGauges = true;
+        private bool showGauges = false;
         private OpenCvVersion openCvVersionLeft;
         private OpenCvVersion openCvVersionRight;
         private OpenCvVersion openCvVersionMiddle;
@@ -85,13 +85,6 @@ namespace webCamTest
             }
         }
 
-        
-        private void button3_Click(object sender, EventArgs e)
-        {
-            var Ocr = new IronOcr.AutoOcr();
-            var Result = Ocr.Read(@"C:\Users\chris\Desktop\origImage.png");
-            Console.WriteLine(Result.Text);
-        }
         Start_MovingWindows movingWindows;
         private void Form1_Load(object sender, EventArgs e)
         {
@@ -119,23 +112,17 @@ namespace webCamTest
             start_MonitorBrightness = new Start_MonitorBrightness();
             start_MonitorBrightness.StartMonitorBrightness(windowHandle, morningTime, eveningTime);
 
-            gaugeInfoForm = new Gauges.GaugeInfo();
-            gaugeInfoForm.Show();
-            Thread thread = new Thread(SendMessages);
+          
+            Thread thread = new Thread(SendMessagesAndUpdateGUI);
             thread.Start();
 
-
-            //Thread thread1 = new Thread(CheckReverseSymbol);
-            //    thread1.Start();
         }
-
+        Gauges.GaugeInfo gaugeInfo;
         [DllImport("user32.dll", SetLastError = true)]
         static extern bool SetWindowPos(IntPtr hWnd, IntPtr hWndInsertAfter, int X, int Y, int cx, int cy, SetWindowPosFlags uFlags);
         IntPtr windowHandle;
         private void CheckReverseSymbol()
         {
-            while(true)
-            {
                 if (openCvVersionMiddle.message != null && openCvVersionMiddle.message.Contains("ReverseSymbol"))
                 {
                     if (openCvVersionMiddle.message.Contains("true"))
@@ -149,22 +136,70 @@ namespace webCamTest
                         SetWindowPos(windowHandle, (IntPtr)SpecialWindowHandles.HWND_BOTTOM, 300, 0, (workingRectangle.Width / 2) + 420, workingRectangle.Height, SetWindowPosFlags.SWP_SHOWWINDOW);
                     }
                 }
-                Thread.Sleep(500);
-            }
+            
         }
     
 
-        private void SendMessages()
+        private void SendMessagesAndUpdateGUI()
         {
             while (true)
             {
-                string sendMes = openCvVersionLeft.message + " , " + openCvVersionRight.message + " , " + 
-                    openCvVersionMiddle.message + " , " + start_MonitorBrightness.msg;
-                byte[] bytesMiddle = ASCIIEncoding.ASCII.GetBytes(sendMes);
-                message = bytesMiddle;
-                bitmap = openCvVersionMiddle.finalImage;
-                gaugeInfoForm.SetBitmap(openCvVersionMiddle.finalImage);
-                //SendBitmap();
+                try
+                {
+                    string sendMes = openCvVersionLeft.message + " , " + openCvVersionRight.message + " , " +
+                                                                                                       openCvVersionMiddle.message + " , " + start_MonitorBrightness.msg;
+                    byte[] bytesMiddle = ASCIIEncoding.ASCII.GetBytes(sendMes);
+                    message = bytesMiddle;
+                    if (openCvVersionMiddle.croppedBitmap != null)
+                    {
+                      //  bitmap = openCvVersionMiddle.croppedBitmap;
+
+                    }
+                  // SendBitmap();
+
+
+                    bool isVisible = leftGuagePicBx.Visible;
+                    if ( isVisible && openCvVersionLeft.finalImage != null)
+                    {
+
+                        leftGuagePicBx.Invoke((Action)delegate
+                        {
+                            leftGuagePicBx.Image = openCvVersionLeft.finalImage;
+                            leftGuagePicBx.Image.RotateFlip(RotateFlipType.Rotate90FlipNone);
+
+                        });
+
+                        rightGuagePicBx.Invoke((Action)delegate
+                        {
+                            rightGuagePicBx.Image = openCvVersionRight.finalImage;
+                            rightGuagePicBx.Image.RotateFlip(RotateFlipType.Rotate90FlipNone);
+
+                        });
+
+                     
+                        middleGuagePicBx.BeginInvoke((Action)delegate
+                        {
+                            middleGuagePicBx.Image = openCvVersionMiddle.finalImage;
+                            middleGuagePicBx.Image.RotateFlip(RotateFlipType.Rotate90FlipNone);
+
+                        });
+                      
+                       Thread.Sleep(100);
+                    }
+                    else
+                    {
+                        reverseCamPicBx.Invoke((Action)delegate
+                        {
+                            reverseCamPicBx.Image = openCvVersionReverse.finalImage;
+                        });
+                    }
+                }
+                catch(Exception ex)
+                {
+                    Console.WriteLine(ex);
+                }
+
+               // CheckReverseSymbol();
             }
         }
         
@@ -187,7 +222,8 @@ namespace webCamTest
                     nwStream.Write(temp, 0, (int)temp.Length);
 
                     ms.Close();
-                    Thread.Sleep(10);
+                 
+                   Thread.Sleep(100);
                 }
                 catch (Exception ex)
                 {
@@ -261,12 +297,8 @@ namespace webCamTest
                 {
                     eveningTime = Convert.ToInt32(result[1]);
                 }
-
             }
-
         }
-
-
 
         private void Form1_Resize(object sender, EventArgs e)
         {
@@ -281,8 +313,7 @@ namespace webCamTest
             middleGuagePicBx.Height = control.Size.Height;
             middleGuagePicBx.Width = control.Size.Width / 3;
             middleGuagePicBx.BackColor = Color.Blue;
-
-
+          
             rightGuagePicBx.Location = new Point((control.Size.Width / 3) * 2, 31);
             rightGuagePicBx.SizeMode = PictureBoxSizeMode.StretchImage;
             rightGuagePicBx.Height = control.Size.Height;

@@ -140,7 +140,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="License-LGPL.txt" />
-    <Compile Include="ScreenCompare\CropAndSendBitmap.cs" />
     <None Include="Settings.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

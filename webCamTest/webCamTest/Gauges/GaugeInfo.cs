@@ -26,23 +26,30 @@ namespace webCamTest.Gauges
 
         private void GaugeInfo_Load(object sender, EventArgs e)
         {
+            pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
             Thread a = new Thread(updateGui);
             a.Start();
         }
 
         private void updateGui()
         {
+            
             while (true)
             {
                 if (bitmap != null)
                 {
+
                     pictureBox1.Invoke((Action)delegate
                     {
+                        pictureBox1.Width = bitmap.Width;
+                        pictureBox1.Height = bitmap.Height;
                         pictureBox1.Image = bitmap;
 
                     });
+                    //pictureBox1.Image.RotateFlip(RotateFlipType.Rotate90FlipNone);
+
                 }
-                Thread.Sleep(10);
+                Thread.Sleep(100);
             }
         }
     }

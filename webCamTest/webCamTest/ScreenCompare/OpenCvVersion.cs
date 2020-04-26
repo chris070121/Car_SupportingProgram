@@ -24,7 +24,7 @@ namespace webCamTest.ScreenCompare
         private PictureBox pictureBox;
         public string message;
         private Form1 mainWindow;
-
+        public Bitmap croppedBitmap;
         public OpenCvVersion(string _name, int _camIndex, PictureBox _pictureBox, Form1 _mainWindow)
         {
             mainWindow = _mainWindow;
@@ -47,13 +47,14 @@ namespace webCamTest.ScreenCompare
 
             frame = new Mat();
             capture = new VideoCapture(camIndex);
+            capture.Fps = 60;
             ////opens a settings window for the cameras
 
-            //if (name == "Middle")
-            //{
-            //    capture.Settings = 1;
+            if (name == "Middle")
+            {
+                //capture.Settings = 1;
 
-            //}
+            }
 
             capture.Open(camIndex);
 
@@ -81,42 +82,42 @@ namespace webCamTest.ScreenCompare
         private void ProcessFrames(Bitmap bitmap)
         {
             string temp = "";
+            Bitmap _croppedImage;
             if (bitmap != null)
             {
-                if (counter % 2 == 0)
+                if (counter%2==0 && name != "Reverse")
                 {
-                    Start_ScreenCompare.findImage(name, bitmap, out imageToShow, out temp);
+                    Start_ScreenCompare.findImage(name, bitmap, out imageToShow, out temp, out _croppedImage);
                     message = temp;
+                    if (name == "Middle" && temp.Contains("Information"))
+                    {
+                        croppedBitmap = _croppedImage;
+                    }
                 }
                 else
                 {
                     imageToShow = bitmap;
                 }
-
-                if (name == "Middle")
+                if (imageToShow != null)
                 {
                     finalImage = (Bitmap)imageToShow.Clone();
-                    //var Ocr = new IronOcr.AdvancedOcr();
-                    //Ocr.CleanBackgroundNoise = true;
-                    //Ocr.DetectWhiteTextOnDarkBackgrounds = true;
-                    //Ocr.EnhanceContrast = true;
-                    //Ocr.EnhanceResolution = true;
-                    //var Result = Ocr.Read(@"C:\Users\chris\Desktop\Car_SupportingProgram\webCamTest\webCamTest\bin\Debug\oilLife.png");
-                    //string temp1 = Regex.Replace(Result.Text, "[^a-zA-Z][^0-9]", " ");
-                    //Console.WriteLine(temp1);
-                    //// CropAndSendBitmap.SendBitmap();
-                    //concurrentDictionary.AddOrUpdate(name, imageToShow, (name, imageToShow)=>imageToShow);
                 }
-                pictureBox.Invoke((Action)delegate
+                if (name == "Middle")
                 {
-                    pictureBox.Image = imageToShow;
-                    if (name != "Reverse")
-                    {
-                        pictureBox.Image.RotateFlip(RotateFlipType.Rotate90FlipNone);
-                    }
-                });
+                    //    //var Ocr = new IronOcr.AdvancedOcr();
+                    //    //Ocr.CleanBackgroundNoise = true;
+                    //    //Ocr.DetectWhiteTextOnDarkBackgrounds = true;
+                    //    //Ocr.EnhanceContrast = true;
+                    //    //Ocr.EnhanceResolution = true;
+                    //    //var Result = Ocr.Read(@"C:\Users\chris\Desktop\Car_SupportingProgram\webCamTest\webCamTest\bin\Debug\oilLife.png");
+                    //    //string temp1 = Regex.Replace(Result.Text, "[^a-zA-Z][^0-9]", " ");
+                    //    //Console.WriteLine(temp1);
+                    //    //// CropAndSendBitmap.SendBitmap();
+                    //    //concurrentDictionary.AddOrUpdate(name, imageToShow, (name, imageToShow)=>imageToShow);
+                }
 
-                if (counter == 50)
+
+                    if (counter == 50)
                 {
                     counter = 0;
                 }

@@ -28,33 +28,30 @@ namespace webCamTest.MonitorBrightness
         private void MonitorBrightnessProcedure()
         {
             BrightnessController br = new BrightnessController(windowHandle);
-       
             TimeSpan now = DateTime.Now.TimeOfDay;
-            bool done = false;
 
-            while (done == false)
+            while (true)
             {
-               
+                for (int i = 0; i < 50; i++)
+                {
                     try
                     {
                         if ((now > morning) && (now < night))
                         {
-                            msg = "BrightnessUp = true"; 
+                            msg = "BrightnessUp = true";
                             br.SetBrightness(100);
-                            done = true;
                         }
                         else
                         {
                             msg = "BrightnessUp = false";
                             br.SetBrightness(0);
-                            done = true;
                         }
-
                     }
                     catch (Exception x)
                     {
                         Console.WriteLine(x.Message);
                     }
+                }
                 //10 minutes
                 Thread.Sleep(600000);
             }

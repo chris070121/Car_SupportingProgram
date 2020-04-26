@@ -14,80 +14,105 @@ namespace webCamTest.ScreenCompare
     public static class Start_ScreenCompare
     {
      
-
         public static void CaptureOrigImage(Bitmap image, string name)
         {
             image.Save(name + "origImage.png", ImageFormat.Png);
         }
 
         static int counter = 0;
-        public static void findImage(string name, Bitmap _source, out Bitmap imageToShow, out string message)
+        public static void findImage(string name, Bitmap _source, out Bitmap imageToShow, out string message, out Bitmap croppedImage)
         {
             Bitmap temp = null;
             string tempMessage = "";
-
-            if (name == "Left")
+            Bitmap _croppedImage = null;
+            try
             {
-                if (counter == 0)
+                if (name == "Left")
                 {
-                    counter++;
-                    Converters.processingImages(EmergencyBrake(), _source, out temp, out tempMessage);
+                    if (counter == 0)
+                    {
+                        counter++;
+                        Converters.processingImages(EmergencyBrake(), _source, out temp, out tempMessage, out _croppedImage);
+                    }
+                    else
+                    {
+                        counter = 0;
+                        Converters.processingImages(LeftTurnSignal(), _source, out temp, out tempMessage, out _croppedImage);
+                    }
+
                 }
-                else 
+                else if (name == "Right")
                 {
-                    counter = 0;
-                    Converters.processingImages(LeftTurnSignal(), _source, out temp, out tempMessage);
+                    if (counter == 0)
+                    {
+                        counter++;
+                        Converters.processingImages(RightTurnSignal(), _source, out temp, out tempMessage, out _croppedImage);
+                    }
+                    if (counter == 1)
+                    {
+                        counter++;
+                        Converters.processingImages(CheckEngine(), _source, out temp, out tempMessage, out _croppedImage);
+                    }
+                    else if (counter == 2)
+                    {
+                        counter = 0;
+                        Converters.processingImages(SeatBeltSymbol(), _source, out temp, out tempMessage, out _croppedImage);
+                    }
+                }
+                else if (name == "Middle")
+                {
+                    if (counter == 0)
+                    {
+                        counter++;
+                        Converters.processingImages(InformationSymbol(), _source, out temp, out tempMessage, out _croppedImage);
+
+                    }
+                    else if (counter == 1)
+                    {
+                        counter++;
+                        Converters.processingImages(ReverseSymbol(), _source, out temp, out tempMessage, out _croppedImage);
+                    }
+                    else if (counter == 2)
+                    {
+                        counter++;
+                        Converters.processingImages(InformationSymbol(), _source, out temp, out tempMessage, out _croppedImage);
+
+                    }
+                    else if (counter == 3)
+                    {
+                        counter = 0;
+                        Converters.processingImages(LightSymbol(), _source, out temp, out tempMessage, out _croppedImage);
+                    }
+                    //else if (counter == 2)
+                    //{
+                    //    counter++;
+                    //    Converters.processingImages(NeutralSymbol(), _source, out temp, out tempMessage);
+                    //}
+                    //else if (counter == 3)
+                    //{
+                    //    counter++;
+                    //    Converters.processingImages(DriveSymbol(), _source, out temp, out tempMessage);
+                    //}
+                    //else if (counter == 4)
+                    //{
+                    //   
+                    //    Converters.processingImages(ParkSymbol(), _source, out temp, out tempMessage);
+
+                    //}
+                }
+                if (name == "Reverse")
+                {
+                    temp = _source;
                 }
             }
-            if (name == "Right")
+            catch(Exception ex)
             {
-                if (counter == 0)
-                {
-                    counter++;
-                    Converters.processingImages(RightTurnSignal(), _source, out temp, out tempMessage);
-                }
-                else
-                {
-                    counter = 0;
-                    Converters.processingImages(SeatBeltSymbol(), _source, out temp, out tempMessage);
-                }
-
-            }
-            if (name == "Middle")
-            {
-                if (counter == 0)
-                {
-                    counter++;
-                    Converters.processingImages(ReverseSymbol(), _source, out temp, out tempMessage);
-                }
-                else if (counter == 1)
-                {
-                    counter = 0;
-                    Converters.processingImages(LightSymbol(), _source, out temp, out tempMessage);
-                }
-                //else if (counter == 2)
-                //{
-                //    counter++;
-                //    Converters.processingImages(NeutralSymbol(), _source, out temp, out tempMessage);
-                //}
-                //else if (counter == 3)
-                //{
-                //    counter++;
-                //    Converters.processingImages(DriveSymbol(), _source, out temp, out tempMessage);
-                //}
-                //else if (counter == 4)
-                //{
-                //   
-                //    Converters.processingImages(ParkSymbol(), _source, out temp, out tempMessage);
-
-                //}
-            }
-            if(name == "Reverse")
-            {
-                temp = _source;
+                Console.WriteLine(ex);
             }
             message = tempMessage;
             imageToShow = temp;
+            croppedImage = _croppedImage;
+
         }
 
 
@@ -102,6 +127,8 @@ namespace webCamTest.ScreenCompare
         private static  TemplateObject driveSymbol;
         private static  TemplateObject lightSymbol;
         private static  TemplateObject seatBeltSymbol;
+        private static TemplateObject infoSymbol;
+        private static TemplateObject checkEngineSymbol;
 
 
         private static TemplateObject EmergencyBrake()
@@ -118,6 +145,38 @@ namespace webCamTest.ScreenCompare
                 ebrake = temp;
             }
             return ebrake;
+        }
+
+        private static TemplateObject CheckEngine()
+        {
+            if (checkEngineSymbol == null)
+            {
+                string topic = "CheckEngine";
+
+                TemplateObject temp = new TemplateObject();
+                temp.filepath = topic + ".png";
+                temp.proMessage = topic + " = true";
+                temp.badMessage = topic + " = false";
+                temp.color = Color.Red;
+                checkEngineSymbol = temp;
+            }
+            return checkEngineSymbol;
+        }
+
+        private static TemplateObject InformationSymbol()
+        {
+            if (infoSymbol == null)
+            {
+                string topic = "InformationSymbol";
+
+                TemplateObject temp = new TemplateObject();
+                temp.filepath = topic + ".png";
+                temp.proMessage = topic + " = true";
+                temp.badMessage = topic + " = false";
+                temp.color = Color.Red;
+                infoSymbol = temp;
+            }
+            return infoSymbol;
         }
 
         private static TemplateObject LeftTurnSignal()
