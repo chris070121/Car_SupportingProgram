@@ -47,7 +47,7 @@ namespace webCamTest.ScreenCompare
                         counter++;
                         Converters.processingImages(RightTurnSignal(), _source, out temp, out tempMessage, out _croppedImage);
                     }
-                    if (counter == 1)
+                   else if (counter == 1)
                     {
                         counter++;
                         Converters.processingImages(CheckEngine(), _source, out temp, out tempMessage, out _croppedImage);
@@ -68,7 +68,7 @@ namespace webCamTest.ScreenCompare
                     }
                     else if (counter == 1)
                     {
-                        counter++;
+                        counter=0;
                         Converters.processingImages(ReverseSymbol(), _source, out temp, out tempMessage, out _croppedImage);
                     }
                 }

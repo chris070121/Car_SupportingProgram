@@ -55,7 +55,7 @@ namespace webCamTest.ScreenCompare
 
             if (name == "BottomMiddle" || name == "TopMiddle")
             {
-                capture.Settings = 1;
+                //capture.Settings = 1;
 
             }
             try

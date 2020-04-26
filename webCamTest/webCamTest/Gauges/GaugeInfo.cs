@@ -27,8 +27,8 @@ namespace webCamTest.Gauges
         private void GaugeInfo_Load(object sender, EventArgs e)
         {
             pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
-            this.FormBorderStyle = FormBorderStyle.None;
             Thread a = new Thread(updateGui);
+            a.IsBackground = true;
             a.Start();
         }
 
@@ -44,11 +44,15 @@ namespace webCamTest.Gauges
                         pictureBox1.Width = bitmap.Width;
                         pictureBox1.Height = bitmap.Height;
                         pictureBox1.Image = bitmap;
-                        pictureBox1.Invalidate();
 
                     });
-                    //pictureBox1.Image.RotateFlip(RotateFlipType.Rotate90FlipNone);
-                    this.Update();
+                    this.Invoke((Action)delegate
+                    {
+                       // pictureBox1.Image.RotateFlip(RotateFlipType.Rotate90FlipNone);
+
+                        this.Update();
+
+                    });
                 }
                 Thread.Sleep(100);
             }

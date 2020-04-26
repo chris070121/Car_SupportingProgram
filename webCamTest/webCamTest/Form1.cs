@@ -172,14 +172,13 @@ namespace webCamTest
                 {
                     string sendMes = openCvVersionLeft.message + " , " + openCvVersionRight.message + " , " +
                                                                                                        openCvVersionBottomMiddle.message + " , " + openCvVersionTopMiddle.message + " , "  + start_MonitorBrightness.msg;
-                    //byte[] bytesMiddle = ASCIIEncoding.ASCII.GetBytes(sendMes);
-                    //message = bytesMiddle;
-                    //if (openCvVersionMiddle.croppedBitmap != null)
-                    //{
-                    //  //  bitmap = openCvVersionMiddle.croppedBitmap;
+                    gaugeSymbolForm.SetLabels(sendMes);
+                    if (openCvVersionBottomMiddle.croppedBitmap != null)
+                    {
+                        gaugeInfoForm.SetBitmap(openCvVersionBottomMiddle.croppedBitmap);
 
-                    //}
-                  // SendBitmap();
+                    }
+                    // SendBitmap();
 
 
                     bool isVisible = leftGuagePicBx.Visible;
