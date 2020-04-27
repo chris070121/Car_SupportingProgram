@@ -30,7 +30,7 @@ namespace webCamTest
         private int morningTime;
         private int eveningTime;
         private string templatePicPath;
-        private bool showGauges = false;
+        private bool showGauges = true;
         private OpenCvVersion openCvVersionLeft;
         private OpenCvVersion openCvVersionRight;
         private OpenCvVersion openCvVersionBottomMiddle;
@@ -49,25 +49,30 @@ namespace webCamTest
 
         private void InitializeStuff()
         {
-            CaptureLeftGaugeBtn.Visible = false;
-            CaptureBottomMiddletGaugeBtn.Visible = false;
-            CaptureTopMiddletGaugeBtn.Visible = false;
+            this.WindowState = FormWindowState.Maximized;
 
-            CaptureRightGaugeBtn.Visible = false;
+            CaptureLeftGaugeBtn.Visible = true;
+            CaptureBottomMiddletGaugeBtn.Visible = true;
+            CaptureTopMiddletGaugeBtn.Visible = true;
+            CaptureRightGaugeBtn.Visible = true;
 
-            reverseCamPicBx.Visible = true;
+            reverseCamPicBx.Visible = false;
 
-            leftGuagePicBx.Visible = false;
-            bottomMiddleGuagePicBx.Visible = false;
-            topMiddleGuagePicBx.Visible = false;
-            rightGuagePicBx.Visible = false;
+            leftGuagePicBx.Visible = true;
+            bottomMiddleGuagePicBx.Visible = true;
+            topMiddleGuagePicBx.Visible = true;
+            rightGuagePicBx.Visible = true;
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
-            if(showGauges)
+            SwitchToGaugesOrReverse();
+        }
+
+        private void SwitchToGaugesOrReverse()
+        {
+            if (showGauges)
             {
-                this.WindowState = FormWindowState.Maximized;
 
                 reverseCamPicBx.Visible = false;
 
@@ -85,10 +90,9 @@ namespace webCamTest
             }
             else
             {
-                this.WindowState = FormWindowState.Normal;
 
                 reverseCamPicBx.Visible = true;
-                
+
                 CaptureLeftGaugeBtn.Visible = false;
                 CaptureBottomMiddletGaugeBtn.Visible = false;
                 CaptureTopMiddletGaugeBtn.Visible = false;
@@ -106,12 +110,6 @@ namespace webCamTest
         Start_MovingWindows movingWindows;
         private void Form1_Load(object sender, EventArgs e)
         {
-
-            workingRectangle = Screen.PrimaryScreen.WorkingArea;
-            this.Location = new Point(295, 0);
-            this.Size = new Size((workingRectangle.Width - 275), workingRectangle.Height + 10);
-
-
             ////Moving Windows
             //movingWindows = new Start_MovingWindows();
             //movingWindows.StartMovingWindows();
@@ -124,7 +122,6 @@ namespace webCamTest
             openCvVersionRight = new OpenCvVersion("Right", RightGaugeIndex, rightGuagePicBx,this);
             openCvVersionBottomMiddle = new OpenCvVersion("BottomMiddle", BottomMiddleGaugeIndex, bottomMiddleGuagePicBx, this);
             openCvVersionTopMiddle = new OpenCvVersion("TopMiddle", TopMiddleGaugeIndex, topMiddleGuagePicBx, this);
-
             openCvVersionReverse = new OpenCvVersion("Reverse", ReversCamera, reverseCamPicBx, this);
 
             ////Start Brightness Monitoring
@@ -142,25 +139,36 @@ namespace webCamTest
             thread.Start();
 
         }
-        [DllImport("user32.dll", SetLastError = true)]
-        static extern bool SetWindowPos(IntPtr hWnd, IntPtr hWndInsertAfter, int X, int Y, int cx, int cy, SetWindowPosFlags uFlags);
-        IntPtr windowHandle;
+      
         private void CheckReverseSymbol()
         {
-                if (openCvVersionBottomMiddle.message != null && openCvVersionBottomMiddle.message.Contains("ReverseSymbol"))
+            if (openCvVersionBottomMiddle.message != null && openCvVersionBottomMiddle.message.Contains("ReverseSymbol"))
+            {
+                if (openCvVersionBottomMiddle.message.Contains("true"))
                 {
-                    if (openCvVersionBottomMiddle.message.Contains("true"))
+                    if (reverseCamPicBx.Visible != true)
                     {
-                       
-                       SetWindowPos(windowHandle, (IntPtr)SpecialWindowHandles.HWND_TOP, 300, 0, (workingRectangle.Width / 2) + 420, workingRectangle.Height, SetWindowPosFlags.SWP_SHOWWINDOW);
-                        
-                    }
-                    else if (openCvVersionBottomMiddle.message.Contains("false"))
-                    {
-                        SetWindowPos(windowHandle, (IntPtr)SpecialWindowHandles.HWND_BOTTOM, 300, 0, (workingRectangle.Width / 2) + 420, workingRectangle.Height, SetWindowPosFlags.SWP_SHOWWINDOW);
+                        this.Invoke((Action)delegate
+                        {
+                            SwitchToGaugesOrReverse();
+                                //  this.TopMost = true;
+                                //  this.BringToFront();                        
+                        });
                     }
                 }
-            
+                else if (openCvVersionBottomMiddle.message.Contains("false"))
+                {
+                    if (leftGuagePicBx.Visible != true)
+                    {
+                        this.Invoke((Action)delegate
+                        {
+                            SwitchToGaugesOrReverse();
+                            //this.TopMost = false;
+                            //this.SendToBack();
+                        });
+                    }
+                }
+            }
         }
     
 
@@ -174,12 +182,13 @@ namespace webCamTest
                                                                                                        openCvVersionBottomMiddle.message + " , " + openCvVersionTopMiddle.message + " , "  + start_MonitorBrightness.msg;
                     gaugeSymbolForm.SetLabels(sendMes);
                     if (openCvVersionBottomMiddle.croppedBitmap != null)
-                    {
+                    { 
                         gaugeInfoForm.SetBitmap(openCvVersionBottomMiddle.croppedBitmap);
-
                     }
-                    // SendBitmap();
-
+                    if (start_MonitorBrightness.msg != null)
+                    {
+                        gaugeInfoForm.SetBrightness(start_MonitorBrightness.msg);
+                    }
 
                     bool isVisible = leftGuagePicBx.Visible;
                     if ( isVisible && openCvVersionLeft.finalImage != null)
@@ -188,32 +197,28 @@ namespace webCamTest
                         leftGuagePicBx.Invoke((Action)delegate
                         {
                             leftGuagePicBx.Image = openCvVersionLeft.finalImage;
-                            leftGuagePicBx.Image.RotateFlip(RotateFlipType.Rotate90FlipNone);
 
                         });
 
                         rightGuagePicBx.Invoke((Action)delegate
                         {
                             rightGuagePicBx.Image = openCvVersionRight.finalImage;
-                            rightGuagePicBx.Image.RotateFlip(RotateFlipType.Rotate90FlipNone);
 
                         });
 
                         topMiddleGuagePicBx.BeginInvoke((Action)delegate
                         {
                             topMiddleGuagePicBx.Image = openCvVersionTopMiddle.finalImage;
-                            topMiddleGuagePicBx.Image.RotateFlip(RotateFlipType.Rotate90FlipNone);
 
                         });
 
                         bottomMiddleGuagePicBx.BeginInvoke((Action)delegate
                         {
                             bottomMiddleGuagePicBx.Image = openCvVersionBottomMiddle.finalImage;
-                            bottomMiddleGuagePicBx.Image.RotateFlip(RotateFlipType.Rotate90FlipNone);
 
                         });
                       
-                       Thread.Sleep(100);
+                       Thread.Sleep(50);
                     }
                     else
                     {
@@ -228,51 +233,10 @@ namespace webCamTest
                     Console.WriteLine(ex);
                 }
 
-               // CheckReverseSymbol();
+                CheckReverseSymbol();
             }
         }
-        
-        static TcpClient client = null;
-        static int port = 9997;
-        public byte[] message;
-        public Bitmap bitmap;
-        public void SendBitmap()
-        {
-            if (client != null && client.Connected && bitmap != null)
-            {
-                try
-                {
-                    NetworkStream nwStream = client.GetStream();
-                    MemoryStream ms = new MemoryStream();
-                    bitmap.Save(ms, ImageFormat.Png);
-
-                    byte[] temp = Combine(ms.ToArray(), message);
-
-                    nwStream.Write(temp, 0, (int)temp.Length);
-
-                    ms.Close();
-                 
-                   Thread.Sleep(100);
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine(ex.Message);
-                }
-            }
-            else
-            {
-                try
-                {
-                    client = new TcpClient("127.0.0.1", port);
-
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine(ex.Message);
-                }
-            }
-
-        }
+      
         public byte[] Combine(byte[] first, byte[] second)
         {
             byte[] bytes = new byte[first.Length + second.Length];
@@ -371,110 +335,7 @@ namespace webCamTest
         {
             openCvVersionRight.takePic = true;
         }
-        public enum SpecialWindowHandles
-        {
-            // ReSharper disable InconsistentNaming
-            /// <summary>
-            ///     Places the window at the top of the Z order.
-            /// </summary>
-            HWND_TOP = 0,
-            /// <summary>
-            ///     Places the window at the bottom of the Z order. If the hWnd parameter identifies a topmost window, the window loses its topmost status and is placed at the bottom of all other windows.
-            /// </summary>
-            HWND_BOTTOM = 1,
-            /// <summary>
-            ///     Places the window above all non-topmost windows. The window maintains its topmost position even when it is deactivated.
-            /// </summary>
-            HWND_TOPMOST = -1,
-            /// <summary>
-            ///     Places the window above all non-topmost windows (that is, behind all topmost windows). This flag has no effect if the window is already a non-topmost window.
-            /// </summary>
-            HWND_NOTOPMOST = -2
-            // ReSharper restore InconsistentNaming
-        }
-        [Flags]
-        public enum SetWindowPosFlags : uint
-        {
-            // ReSharper disable InconsistentNaming
-
-            /// <summary>
-            ///     If the calling thread and the thread that owns the window are attached to different input queues, the system posts the request to the thread that owns the window. This prevents the calling thread from blocking its execution while other threads process the request.
-            /// </summary>
-            SWP_ASYNCWINDOWPOS = 0x4000,
-
-            /// <summary>
-            ///     Prevents generation of the WM_SYNCPAINT message.
-            /// </summary>
-            SWP_DEFERERASE = 0x2000,
-
-            /// <summary>
-            ///     Draws a frame (defined in the window's class description) around the window.
-            /// </summary>
-            SWP_DRAWFRAME = 0x0020,
-
-            /// <summary>
-            ///     Applies new frame styles set using the SetWindowLong function. Sends a WM_NCCALCSIZE message to the window, even if the window's size is not being changed. If this flag is not specified, WM_NCCALCSIZE is sent only when the window's size is being changed.
-            /// </summary>
-            SWP_FRAMECHANGED = 0x0020,
-
-            /// <summary>
-            ///     Hides the window.
-            /// </summary>
-            SWP_HIDEWINDOW = 0x0080,
-
-            /// <summary>
-            ///     Does not activate the window. If this flag is not set, the window is activated and moved to the top of either the topmost or non-topmost group (depending on the setting of the hWndInsertAfter parameter).
-            /// </summary>
-            SWP_NOACTIVATE = 0x0010,
-
-            /// <summary>
-            ///     Discards the entire contents of the client area. If this flag is not specified, the valid contents of the client area are saved and copied back into the client area after the window is sized or repositioned.
-            /// </summary>
-            SWP_NOCOPYBITS = 0x0100,
-
-            /// <summary>
-            ///     Retains the current position (ignores X and Y parameters).
-            /// </summary>
-            SWP_NOMOVE = 0x0002,
-
-            /// <summary>
-            ///     Does not change the owner window's position in the Z order.
-            /// </summary>
-            SWP_NOOWNERZORDER = 0x0200,
-
-            /// <summary>
-            ///     Does not redraw changes. If this flag is set, no repainting of any kind occurs. This applies to the client area, the nonclient area (including the title bar and scroll bars), and any part of the parent window uncovered as a result of the window being moved. When this flag is set, the application must explicitly invalidate or redraw any parts of the window and parent window that need redrawing.
-            /// </summary>
-            SWP_NOREDRAW = 0x0008,
-
-            /// <summary>
-            ///     Same as the SWP_NOOWNERZORDER flag.
-            /// </summary>
-            SWP_NOREPOSITION = 0x0200,
-
-            /// <summary>
-            ///     Prevents the window from receiving the WM_WINDOWPOSCHANGING message.
-            /// </summary>
-            SWP_NOSENDCHANGING = 0x0400,
-
-            /// <summary>
-            ///     Retains the current size (ignores the cx and cy parameters).
-            /// </summary>
-            SWP_NOSIZE = 0x0001,
-
-            /// <summary>
-            ///     Retains the current Z order (ignores the hWndInsertAfter parameter).
-            /// </summary>
-            SWP_NOZORDER = 0x0004,
-
-            /// <summary>
-            ///     Displays the window.
-            /// </summary>
-            SWP_SHOWWINDOW = 0x0040,
-
-            // ReSharper restore InconsistentNaming
-        }
-
+   
         private void CaptureBottomMiddletGaugeBtn_Click(object sender, EventArgs e)
         {
             openCvVersionBottomMiddle.takePic = true;

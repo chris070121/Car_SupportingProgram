@@ -53,7 +53,7 @@ namespace webCamTest.ScreenCompare
             capture.Fps = 60;
             ////opens a settings window for the cameras
 
-            if (name == "BottomMiddle" || name == "TopMiddle")
+            if (/*name == "BottomMiddle" ||*/ name == "TopMiddle")
             {
                 //capture.Settings = 1;
 
@@ -79,7 +79,11 @@ namespace webCamTest.ScreenCompare
                         screenCompare.CaptureOrigImage(image, name);
                         takePic = false;
                     }
-                    ProcessFrames(image);
+                    if(name!="Reverse")
+                    {
+                        image.RotateFlip(RotateFlipType.Rotate90FlipNone);
+                    }
+                ProcessFrames(image);
                 }
                 catch(Exception ex)
                 { }
@@ -95,37 +99,45 @@ namespace webCamTest.ScreenCompare
             Bitmap _croppedImage;
             if (bitmap != null)
             {
-                if (counter%2==0 && name != "Reverse")
+                try
                 {
-                    screenCompare.findImage(name, bitmap, out imageToShow, out temp, out _croppedImage);
-                    message = temp;
-                    if (name == "BottomMiddle" && temp.Contains("Information"))
+                    if (counter % 2 == 0 && name != "Reverse")
                     {
-                        croppedBitmap = _croppedImage;
+                        screenCompare.findImage(name, bitmap, out imageToShow, out temp);
+                        message = temp;
+
+                    }
+                    else
+                    {
+                        imageToShow = bitmap;
+                    }
+                    if (imageToShow != null)
+                    {
+                        finalImage = (Bitmap)imageToShow.Clone();
+                        if (name == "BottomMiddle")
+                        {
+                            croppedBitmap = CropImage((Bitmap)imageToShow.Clone());
+                        }
+                    }
+                    if (name == "BottomMiddle")
+                    {
+                        //croppedBitmap = CropImage((Bitmap)imageToShow.Clone());
+                        //    //var Ocr = new IronOcr.AdvancedOcr();
+                        //    //Ocr.CleanBackgroundNoise = true;
+                        //    //Ocr.DetectWhiteTextOnDarkBackgrounds = true;
+                        //    //Ocr.EnhanceContrast = true;
+                        //    //Ocr.EnhanceResolution = true;
+                        //    //var Result = Ocr.Read(@"C:\Users\chris\Desktop\Car_SupportingProgram\webCamTest\webCamTest\bin\Debug\oilLife.png");
+                        //    //string temp1 = Regex.Replace(Result.Text, "[^a-zA-Z][^0-9]", " ");
+                        //    //Console.WriteLine(temp1);
+                        //    //// CropAndSendBitmap.SendBitmap();
+                        //    //concurrentDictionary.AddOrUpdate(name, imageToShow, (name, imageToShow)=>imageToShow);
                     }
                 }
-                else
+                catch(Exception ex)
                 {
-                    imageToShow = bitmap;
-                }
-                if (imageToShow != null)
-                {
-                    finalImage = (Bitmap)imageToShow.Clone();
-                }
-                if (name == "Middle")
-                {
-                    //    //var Ocr = new IronOcr.AdvancedOcr();
-                    //    //Ocr.CleanBackgroundNoise = true;
-                    //    //Ocr.DetectWhiteTextOnDarkBackgrounds = true;
-                    //    //Ocr.EnhanceContrast = true;
-                    //    //Ocr.EnhanceResolution = true;
-                    //    //var Result = Ocr.Read(@"C:\Users\chris\Desktop\Car_SupportingProgram\webCamTest\webCamTest\bin\Debug\oilLife.png");
-                    //    //string temp1 = Regex.Replace(Result.Text, "[^a-zA-Z][^0-9]", " ");
-                    //    //Console.WriteLine(temp1);
-                    //    //// CropAndSendBitmap.SendBitmap();
-                    //    //concurrentDictionary.AddOrUpdate(name, imageToShow, (name, imageToShow)=>imageToShow);
-                }
 
+                }
 
                     if (counter == 50)
                 {
@@ -140,7 +152,20 @@ namespace webCamTest.ScreenCompare
 
 
             }
-           
+         
+        }
+        private Bitmap CropImage(Bitmap origBitmap)
+        {
+           // Rec{ X = 88 Y = 179 Width = 43 Height = 65}
+           // Rectangle croppedrectangle = new Rectangle(match.X - 20, match.Y - 20, match.Width + 350, match.Height + 200);
+            Rectangle croppedRect = new Rectangle(68, 159, 383, 265);
+            int width = Math.Abs(croppedRect.Width);
+            int heigh = Math.Abs(croppedRect.Height);
+            Bitmap nb = new Bitmap(width, heigh);
+            Graphics g = Graphics.FromImage(nb);
+            g.DrawImage(origBitmap, 0, 0, croppedRect, GraphicsUnit.Pixel);
+            return nb;
+
         }
     }
 }

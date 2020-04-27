@@ -38,6 +38,9 @@ namespace webCamTest.Gauges
         public GaugeSymbols()
         {
             InitializeComponent();
+            this.TopMost = true;
+            this.StartPosition = FormStartPosition.Manual;
+            this.Location = new Point(-2275, 0);
             Thread a = new Thread(UpdateGUI);
             a.IsBackground = true;
             a.Start();
@@ -57,43 +60,65 @@ namespace webCamTest.Gauges
                     label1.Invoke((Action)delegate
                     {
                         label1.Text = _leftSignal;
-                        
+                        SetColors(label1);
                     });
 
                     label2.Invoke((Action)delegate
                     {
                         label2.Text = _rightSignal;
+                        SetColors(label2);
+
                     });
                     label3.Invoke((Action)delegate
                     {
                         label3.Text = _checkEngineSymbol;
+                        SetColors(label3);
+
                     });
                     label4.Invoke((Action)delegate
                     {
                         label4.Text = _emergencyBrake;
+                        SetColors(label4);
+
                     });
                     label5.Invoke((Action)delegate
                     {
                         label5.Text = _reverseSymbol;
+                        SetColors(label5);
+
                     });
                     label6.Invoke((Action)delegate
                     {
                         label6.Text = _seatBelt;
+                        SetColors(label6);
+
                     });
                     label7.Invoke((Action)delegate
                     {
                         label7.Text = _highBeamLightSymbol;
+                        SetColors(label7);
+
                     });
                     label8.Invoke((Action)delegate
                     {
                         label8.Text = _gasLightSymbol;
+                        SetColors(label8);
+
                     });
                     label9.Invoke((Action)delegate
                     {
                         label9.Text = _lightSymbol;
+                        SetColors(label9);
                     });
-                    this.Update();
-                    Thread.Sleep(100);
+                    this.Invoke((Action)delegate
+                    {
+                        // pictureBox1.Image.RotateFlip(RotateFlipType.Rotate90FlipNone);
+                        //this.Width = pictureBox1.Width;
+                        //this.Height = pictureBox1.Height;
+                        this.Update();
+
+                    });
+                    Thread.Sleep(10);
                 }
                 catch(Exception ex)
                 {
@@ -103,6 +128,17 @@ namespace webCamTest.Gauges
             }
         }
 
+        private void SetColors(Label label)
+        {
+            if (label.Text.Contains("true"))
+            {
+                label.ForeColor = Color.Red;
+            }
+            else
+            {
+                label.ForeColor = Color.White;
+            }
+        }
         public void SetLabels(string buffer)
         {
             string[] message = buffer.Split(',');
@@ -111,39 +147,39 @@ namespace webCamTest.Gauges
                 string[] result = a.Split('=');
                 if (result[0].Contains("LightSymbol"))
                 {
-                    _lightSymbol = "LightSymbol= " + result[1];
+                    _lightSymbol = "LightSymbol\n=" + result[1];
                 }
                 else if (result[0].Contains("SeatBeltSymbol"))
                 {
-                    _seatBelt = "SeatBeltSymbol= " + result[1];
+                    _seatBelt = "SeatBeltSymbol\n= " + result[1];
                 }
                 else if (result[0].Contains("ReverseSymbol"))
                 {
-                    _reverseSymbol = "ReverseSymbol= " + result[1];
+                    _reverseSymbol = "ReverseSymbol\n= " + result[1];
                 }
                 else if (result[0].Contains("RightTurnSignal"))
                 {
-                    _rightSignal = "RightTurnSignal= " + result[1];
+                    _rightSignal = "RightTurnSignal\n= " + result[1];
                 }
                 else if (result[0].Contains("LeftTurnSignal"))
                 {
-                    _leftSignal = "LeftTurnSignal = " + result[1];
+                    _leftSignal = "LeftTurnSignal \n= " + result[1];
                 }
                 else if (result[0].Contains("EmergencyBrake"))
                 {
-                    _emergencyBrake = "EmergencyBrake = " + result[1];
+                    _emergencyBrake = "EmergencyBrake\n = " + result[1];
                 }
                 else if (result[0].Contains("CheckEngine"))
                 {
-                    _checkEngineSymbol = "CheckEngine = " + result[1];
+                    _checkEngineSymbol = "CheckEngine \n= " + result[1];
                 }
                 else if (result[0].Contains("GasLightSymbol"))
                 {
-                    _gasLightSymbol = "GasLightSymbol = " + result[1];
+                    _gasLightSymbol = "GasLightSymbol\n = " + result[1];
                 }
                 else if (result[0].Contains("HiBeamLightSymbol"))
                 {
-                    _highBeamLightSymbol = "HiBeam = " + result[1];
+                    _highBeamLightSymbol = "HiBeam \n= " + result[1];
                 }
                 else if (result[0].Contains("BrightnessUp"))
                 {

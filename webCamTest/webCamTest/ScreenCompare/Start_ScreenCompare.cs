@@ -20,11 +20,10 @@ namespace webCamTest.ScreenCompare
         }
 
          int counter = 0;
-        public  void findImage(string name, Bitmap _source, out Bitmap imageToShow, out string message, out Bitmap croppedImage)
+        public  void findImage(string name, Bitmap _source, out Bitmap imageToShow, out string message)
         {
             Bitmap temp = null;
             string tempMessage = "";
-            Bitmap _croppedImage = null;
             try
             {
                 if (name == "Left")
@@ -32,12 +31,12 @@ namespace webCamTest.ScreenCompare
                     if (counter == 0)
                     {
                         counter++;
-                        Converters.processingImages(EmergencyBrake(), _source, out temp, out tempMessage, out _croppedImage);
+                        Converters.processingImages(EmergencyBrake(), _source, out temp, out tempMessage);
                     }
                     else
                     {
                         counter = 0;
-                        Converters.processingImages(LeftTurnSignal(), _source, out temp, out tempMessage, out _croppedImage);
+                        Converters.processingImages(LeftTurnSignal(), _source, out temp, out tempMessage);
                     }
                 }
                 else if (name == "Right")
@@ -45,17 +44,17 @@ namespace webCamTest.ScreenCompare
                     if (counter == 0)
                     {
                         counter++;
-                        Converters.processingImages(RightTurnSignal(), _source, out temp, out tempMessage, out _croppedImage);
+                        Converters.processingImages(RightTurnSignal(), _source, out temp, out tempMessage);
                     }
                    else if (counter == 1)
                     {
                         counter++;
-                        Converters.processingImages(CheckEngine(), _source, out temp, out tempMessage, out _croppedImage);
+                        Converters.processingImages(CheckEngine(), _source, out temp, out tempMessage);
                     }
                     else if (counter == 2)
                     {
                         counter = 0;
-                        Converters.processingImages(SeatBeltSymbol(), _source, out temp, out tempMessage, out _croppedImage);
+                        Converters.processingImages(SeatBeltSymbol(), _source, out temp, out tempMessage);
                     }
                 }
                 else if (name == "BottomMiddle")
@@ -63,13 +62,13 @@ namespace webCamTest.ScreenCompare
                     if (counter == 0)
                     {
                         counter++;
-                        Converters.processingImages(InformationSymbol(), _source, out temp, out tempMessage, out _croppedImage);
+                       // Converters.processingImages(InformationSymbol(), _source, out temp, out tempMessage);
 
                     }
                     else if (counter == 1)
                     {
                         counter=0;
-                        Converters.processingImages(ReverseSymbol(), _source, out temp, out tempMessage, out _croppedImage);
+                        Converters.processingImages(ReverseSymbol(), _source, out temp, out tempMessage);
                     }
                 }
                 else if (name == "TopMiddle")
@@ -77,17 +76,17 @@ namespace webCamTest.ScreenCompare
                     if (counter == 0)
                     {
                         counter++;
-                        Converters.processingImages(LightSymbol(), _source, out temp, out tempMessage, out _croppedImage);
+                        Converters.processingImages(LightSymbol(), _source, out temp, out tempMessage);
                     }
                     else if (counter == 1)
                     {
                         counter++;
-                        Converters.processingImages(HighBeamLightSymbol(), _source, out temp, out tempMessage, out _croppedImage);
+                        Converters.processingImages(HighBeamLightSymbol(), _source, out temp, out tempMessage);
                     }
                     else if (counter == 2)
                     {
                         counter = 0;
-                        Converters.processingImages(GasLightSymbol(), _source, out temp, out tempMessage, out _croppedImage);
+                        Converters.processingImages(GasLightSymbol(), _source, out temp, out tempMessage);
                     }
 
                 }
@@ -102,8 +101,6 @@ namespace webCamTest.ScreenCompare
             }
             message = tempMessage;
             imageToShow = temp;
-            croppedImage = _croppedImage;
-
         }
 
 
