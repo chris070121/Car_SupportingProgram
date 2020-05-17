@@ -37,29 +37,25 @@
             this.rightGuagePicBx = new System.Windows.Forms.PictureBox();
             this.reverseCamPicBx = new System.Windows.Forms.PictureBox();
             this.CaptureTopMiddletGaugeBtn = new System.Windows.Forms.Button();
-            this.topMiddleGuagePicBx = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.leftGuagePicBx)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.bottomMiddleGuagePicBx)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.rightGuagePicBx)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.reverseCamPicBx)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.topMiddleGuagePicBx)).BeginInit();
             this.SuspendLayout();
             // 
             // leftGuagePicBx
             // 
-            this.leftGuagePicBx.Location = new System.Drawing.Point(0, 48);
-            this.leftGuagePicBx.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.leftGuagePicBx.Location = new System.Drawing.Point(0, 31);
             this.leftGuagePicBx.Name = "leftGuagePicBx";
-            this.leftGuagePicBx.Size = new System.Drawing.Size(356, 571);
+            this.leftGuagePicBx.Size = new System.Drawing.Size(237, 371);
             this.leftGuagePicBx.TabIndex = 0;
             this.leftGuagePicBx.TabStop = false;
             // 
             // SwitchBtn
             // 
-            this.SwitchBtn.Location = new System.Drawing.Point(0, 3);
-            this.SwitchBtn.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.SwitchBtn.Location = new System.Drawing.Point(0, 2);
             this.SwitchBtn.Name = "SwitchBtn";
-            this.SwitchBtn.Size = new System.Drawing.Size(176, 35);
+            this.SwitchBtn.Size = new System.Drawing.Size(117, 23);
             this.SwitchBtn.TabIndex = 1;
             this.SwitchBtn.Text = "Switch";
             this.SwitchBtn.UseVisualStyleBackColor = true;
@@ -67,10 +63,9 @@
             // 
             // CaptureLeftGaugeBtn
             // 
-            this.CaptureLeftGaugeBtn.Location = new System.Drawing.Point(184, 3);
-            this.CaptureLeftGaugeBtn.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.CaptureLeftGaugeBtn.Location = new System.Drawing.Point(123, 2);
             this.CaptureLeftGaugeBtn.Name = "CaptureLeftGaugeBtn";
-            this.CaptureLeftGaugeBtn.Size = new System.Drawing.Size(192, 35);
+            this.CaptureLeftGaugeBtn.Size = new System.Drawing.Size(128, 23);
             this.CaptureLeftGaugeBtn.TabIndex = 2;
             this.CaptureLeftGaugeBtn.Text = "CaptureLeftGauge";
             this.CaptureLeftGaugeBtn.UseVisualStyleBackColor = true;
@@ -78,19 +73,17 @@
             // 
             // bottomMiddleGuagePicBx
             // 
-            this.bottomMiddleGuagePicBx.Location = new System.Drawing.Point(364, 331);
-            this.bottomMiddleGuagePicBx.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.bottomMiddleGuagePicBx.Location = new System.Drawing.Point(243, 215);
             this.bottomMiddleGuagePicBx.Name = "bottomMiddleGuagePicBx";
-            this.bottomMiddleGuagePicBx.Size = new System.Drawing.Size(231, 288);
+            this.bottomMiddleGuagePicBx.Size = new System.Drawing.Size(154, 187);
             this.bottomMiddleGuagePicBx.TabIndex = 3;
             this.bottomMiddleGuagePicBx.TabStop = false;
             // 
             // CaptureBottomMiddletGaugeBtn
             // 
-            this.CaptureBottomMiddletGaugeBtn.Location = new System.Drawing.Point(404, 3);
-            this.CaptureBottomMiddletGaugeBtn.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.CaptureBottomMiddletGaugeBtn.Location = new System.Drawing.Point(269, 2);
             this.CaptureBottomMiddletGaugeBtn.Name = "CaptureBottomMiddletGaugeBtn";
-            this.CaptureBottomMiddletGaugeBtn.Size = new System.Drawing.Size(232, 35);
+            this.CaptureBottomMiddletGaugeBtn.Size = new System.Drawing.Size(155, 23);
             this.CaptureBottomMiddletGaugeBtn.TabIndex = 4;
             this.CaptureBottomMiddletGaugeBtn.Text = "CaptureBottomMiddleGauge";
             this.CaptureBottomMiddletGaugeBtn.UseVisualStyleBackColor = true;
@@ -98,10 +91,9 @@
             // 
             // CaptureRightGaugeBtn
             // 
-            this.CaptureRightGaugeBtn.Location = new System.Drawing.Point(960, 3);
-            this.CaptureRightGaugeBtn.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.CaptureRightGaugeBtn.Location = new System.Drawing.Point(640, 2);
             this.CaptureRightGaugeBtn.Name = "CaptureRightGaugeBtn";
-            this.CaptureRightGaugeBtn.Size = new System.Drawing.Size(192, 35);
+            this.CaptureRightGaugeBtn.Size = new System.Drawing.Size(128, 23);
             this.CaptureRightGaugeBtn.TabIndex = 5;
             this.CaptureRightGaugeBtn.Text = "CaptureRightGauge";
             this.CaptureRightGaugeBtn.UseVisualStyleBackColor = true;
@@ -109,48 +101,35 @@
             // 
             // rightGuagePicBx
             // 
-            this.rightGuagePicBx.Location = new System.Drawing.Point(604, 48);
-            this.rightGuagePicBx.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.rightGuagePicBx.Location = new System.Drawing.Point(403, 31);
             this.rightGuagePicBx.Name = "rightGuagePicBx";
-            this.rightGuagePicBx.Size = new System.Drawing.Size(258, 571);
+            this.rightGuagePicBx.Size = new System.Drawing.Size(172, 371);
             this.rightGuagePicBx.TabIndex = 6;
             this.rightGuagePicBx.TabStop = false;
             // 
             // reverseCamPicBx
             // 
-            this.reverseCamPicBx.Location = new System.Drawing.Point(872, 48);
-            this.reverseCamPicBx.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.reverseCamPicBx.Location = new System.Drawing.Point(581, 31);
             this.reverseCamPicBx.Name = "reverseCamPicBx";
-            this.reverseCamPicBx.Size = new System.Drawing.Size(150, 77);
+            this.reverseCamPicBx.Size = new System.Drawing.Size(100, 50);
             this.reverseCamPicBx.TabIndex = 7;
             this.reverseCamPicBx.TabStop = false;
             // 
             // CaptureTopMiddletGaugeBtn
             // 
-            this.CaptureTopMiddletGaugeBtn.Location = new System.Drawing.Point(702, 3);
-            this.CaptureTopMiddletGaugeBtn.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.CaptureTopMiddletGaugeBtn.Location = new System.Drawing.Point(468, 2);
             this.CaptureTopMiddletGaugeBtn.Name = "CaptureTopMiddletGaugeBtn";
-            this.CaptureTopMiddletGaugeBtn.Size = new System.Drawing.Size(210, 35);
+            this.CaptureTopMiddletGaugeBtn.Size = new System.Drawing.Size(140, 23);
             this.CaptureTopMiddletGaugeBtn.TabIndex = 8;
             this.CaptureTopMiddletGaugeBtn.Text = "CaptureTopMiddleGauge";
             this.CaptureTopMiddletGaugeBtn.UseVisualStyleBackColor = true;
             this.CaptureTopMiddletGaugeBtn.Click += new System.EventHandler(this.CaptureTopMiddletGaugeBtn_Click);
             // 
-            // topMiddleGuagePicBx
-            // 
-            this.topMiddleGuagePicBx.Location = new System.Drawing.Point(365, 48);
-            this.topMiddleGuagePicBx.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.topMiddleGuagePicBx.Name = "topMiddleGuagePicBx";
-            this.topMiddleGuagePicBx.Size = new System.Drawing.Size(231, 288);
-            this.topMiddleGuagePicBx.TabIndex = 9;
-            this.topMiddleGuagePicBx.TabStop = false;
-            // 
             // Form1
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1842, 926);
-            this.Controls.Add(this.topMiddleGuagePicBx);
+            this.ClientSize = new System.Drawing.Size(1228, 602);
             this.Controls.Add(this.CaptureTopMiddletGaugeBtn);
             this.Controls.Add(this.reverseCamPicBx);
             this.Controls.Add(this.rightGuagePicBx);
@@ -160,7 +139,6 @@
             this.Controls.Add(this.CaptureLeftGaugeBtn);
             this.Controls.Add(this.SwitchBtn);
             this.Controls.Add(this.leftGuagePicBx);
-            this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.Name = "Form1";
             this.Text = "CarSuppProgram";
             this.Load += new System.EventHandler(this.Form1_Load);
@@ -169,7 +147,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.bottomMiddleGuagePicBx)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.rightGuagePicBx)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.reverseCamPicBx)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.topMiddleGuagePicBx)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -185,7 +162,6 @@
         private System.Windows.Forms.PictureBox rightGuagePicBx;
         private System.Windows.Forms.PictureBox reverseCamPicBx;
         private System.Windows.Forms.Button CaptureTopMiddletGaugeBtn;
-        private System.Windows.Forms.PictureBox topMiddleGuagePicBx;
     }
 }
 

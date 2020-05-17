@@ -26,6 +26,7 @@ namespace webCamTest.ScreenCompare
         private Form1 mainWindow;
         public Bitmap croppedBitmap;
         Start_ScreenCompare screenCompare;
+        public bool lightsOn = false;
 
         public OpenCvVersion(string _name, int _camIndex, PictureBox _pictureBox, Form1 _mainWindow)
         {
@@ -50,12 +51,12 @@ namespace webCamTest.ScreenCompare
 
             frame = new Mat();
             capture = new VideoCapture(camIndex);
-            capture.Fps = 60;
+          //  capture.Fps = 30;
             ////opens a settings window for the cameras
 
-            if (/*name == "BottomMiddle" ||*/ name == "TopMiddle")
+            if (name == "Left")
             {
-                //capture.Settings = 1;
+              //  capture.Settings = 1;
 
             }
             try
@@ -72,6 +73,16 @@ namespace webCamTest.ScreenCompare
             {
                 try
                 {
+                    if (name == "BottomMiddle" && lightsOn == true)
+                    {
+                        capture.Exposure = -6;
+                        capture.Brightness = -64;
+                    }
+                    else if (name == "BottomMiddle" && lightsOn == false)
+                    {
+                        capture.Exposure = -7;
+                        capture.Brightness = 64;
+                    }
                     capture.Read(frame);
                     image = BitmapConverter.ToBitmap(frame);
                     if (takePic)
@@ -79,11 +90,16 @@ namespace webCamTest.ScreenCompare
                         screenCompare.CaptureOrigImage(image, name);
                         takePic = false;
                     }
-                    if(name!="Reverse")
+                    if(name!="Reverse" && name != "BottomMiddle")
                     {
                         image.RotateFlip(RotateFlipType.Rotate90FlipNone);
                     }
-                ProcessFrames(image);
+                    else if (name == "BottomMiddle")
+                    {
+                        image.RotateFlip(RotateFlipType.Rotate180FlipNone);
+
+                    }
+                    ProcessFrames(image);
                 }
                 catch(Exception ex)
                 { }
@@ -96,7 +112,6 @@ namespace webCamTest.ScreenCompare
         private void ProcessFrames(Bitmap bitmap)
         {
             string temp = "";
-            Bitmap _croppedImage;
             if (bitmap != null)
             {
                 try
@@ -139,7 +154,7 @@ namespace webCamTest.ScreenCompare
 
                 }
 
-                    if (counter == 50)
+                if (counter == 50)
                 {
                     counter = 0;
                 }
@@ -158,7 +173,7 @@ namespace webCamTest.ScreenCompare
         {
            // Rec{ X = 88 Y = 179 Width = 43 Height = 65}
            // Rectangle croppedrectangle = new Rectangle(match.X - 20, match.Y - 20, match.Width + 350, match.Height + 200);
-            Rectangle croppedRect = new Rectangle(68, 159, 383, 265);
+            Rectangle croppedRect = new Rectangle(210, 160, 320, 220);
             int width = Math.Abs(croppedRect.Width);
             int heigh = Math.Abs(croppedRect.Height);
             Bitmap nb = new Bitmap(width, heigh);

@@ -53,37 +53,40 @@ namespace webCamTest.ScreenCompare
                     }
                     else if (counter == 2)
                     {
+                        counter ++;
+                        Converters.processingImages(TirePressureSymbol(), _source, out temp, out tempMessage);
+                    }
+                    else if (counter == 3)
+                    {
                         counter = 0;
                         Converters.processingImages(SeatBeltSymbol(), _source, out temp, out tempMessage);
                     }
+                    
                 }
                 else if (name == "BottomMiddle")
                 {
                     if (counter == 0)
                     {
                         counter++;
-                       // Converters.processingImages(InformationSymbol(), _source, out temp, out tempMessage);
+                       // Converters.processingImages(DarkReverseSymbol(), _source, out temp, out tempMessage);
 
                     }
                     else if (counter == 1)
                     {
-                        counter=0;
-                        Converters.processingImages(ReverseSymbol(), _source, out temp, out tempMessage);
+                        counter++;
+                        Converters.processingImages(LightReverseSymbol(), _source, out temp, out tempMessage);
                     }
-                }
-                else if (name == "TopMiddle")
-                {
-                    if (counter == 0)
+                    else if (counter == 2)
                     {
                         counter++;
-                        Converters.processingImages(LightSymbol(), _source, out temp, out tempMessage);
+                        Converters.processingImages(LowLightSymbol(), _source, out temp, out tempMessage);
                     }
-                    else if (counter == 1)
+                    else if (counter == 3)
                     {
                         counter++;
                         Converters.processingImages(HighBeamLightSymbol(), _source, out temp, out tempMessage);
                     }
-                    else if (counter == 2)
+                    else if (counter == 4)
                     {
                         counter = 0;
                         Converters.processingImages(GasLightSymbol(), _source, out temp, out tempMessage);
@@ -106,21 +109,41 @@ namespace webCamTest.ScreenCompare
 
 
 
-        private  TemplateObject ebrake;
-        private  TemplateObject leftTurnSignal;
-        private  TemplateObject rightTurnSignal;
-        private  TemplateObject parkSymbol;
-        private  TemplateObject reverseSymbol;
-        private  TemplateObject neutralSymbol;
-        private  TemplateObject driveSymbol;
-        private  TemplateObject lightSymbol;
-        private  TemplateObject seatBeltSymbol;
-        private  TemplateObject infoSymbol;
-        private  TemplateObject checkEngineSymbol;
-        private  TemplateObject highBeamLightSymbol;
+        private TemplateObject ebrake;
+        private TemplateObject leftTurnSignal;
+        private TemplateObject rightTurnSignal;
+        private TemplateObject parkSymbol;
+        private TemplateObject lightReverseSymbol;
+        private TemplateObject darkReverseSymbol;
+        private TemplateObject neutralSymbol;
+        private TemplateObject driveSymbol;
+        private TemplateObject lowLightSymbol;
+        private TemplateObject seatBeltSymbol;
+        private TemplateObject infoSymbol;
+        private TemplateObject checkEngineSymbol;
+        private TemplateObject highBeamLightSymbol;
         private TemplateObject gasLightSymbol;
+        private TemplateObject tirePressureSymbol;
 
-        private  TemplateObject EmergencyBrake()
+
+        private TemplateObject TirePressureSymbol()
+        {
+            if (tirePressureSymbol == null)
+            {
+                string topic = "TirePressureSymbol";
+
+                TemplateObject temp = new TemplateObject();
+                temp.filepath = topic + ".png";
+                temp.proMessage = topic + " = true";
+                temp.badMessage = topic + " = false";
+                temp.color = Color.Red;
+                tirePressureSymbol = temp;
+            }
+            return tirePressureSymbol;
+        }
+
+
+        private TemplateObject EmergencyBrake()
         {
             if (ebrake == null)
             {
@@ -231,21 +254,36 @@ namespace webCamTest.ScreenCompare
             }
             return parkSymbol;
         }
-
-        private  TemplateObject ReverseSymbol()
+        
+        private TemplateObject DarkReverseSymbol()
         {
-            if (reverseSymbol == null)
+            if (darkReverseSymbol == null)
             {
-                string topic = "ReverseSymbol";
+                string topic = "DarkReverseSymbol";
 
                 TemplateObject temp = new TemplateObject();
                 temp.filepath = topic + ".png";
                 temp.proMessage = topic + "  = true";
                 temp.badMessage = topic + " = false";
                 temp.color = Color.Green;
-                reverseSymbol = temp;
+                darkReverseSymbol = temp;
             }
-            return reverseSymbol;
+            return darkReverseSymbol;
+        }
+        private  TemplateObject LightReverseSymbol()
+        {
+            if (lightReverseSymbol == null)
+            {
+                string topic = "LightReverseSymbol";
+
+                TemplateObject temp = new TemplateObject();
+                temp.filepath = topic + ".png";
+                temp.proMessage = topic + "  = true";
+                temp.badMessage = topic + " = false";
+                temp.color = Color.Green;
+                lightReverseSymbol = temp;
+            }
+            return lightReverseSymbol;
         }
 
         private  TemplateObject NeutralSymbol()
@@ -280,19 +318,19 @@ namespace webCamTest.ScreenCompare
             return driveSymbol;
         }
 
-        private  TemplateObject LightSymbol()
+        private  TemplateObject LowLightSymbol()
         {
-            if (lightSymbol == null)
+            if (lowLightSymbol == null)
             {
-                string topic = "LightSymbol";
+                string topic = "LowLightSymbol";
                 TemplateObject temp = new TemplateObject();
                 temp.filepath = topic + ".png";
                 temp.proMessage = topic + "  = true";
                 temp.badMessage = topic + " = false";
                 temp.color = Color.Pink;
-                lightSymbol = temp;
+                lowLightSymbol = temp;
             }
-            return lightSymbol;
+            return lowLightSymbol;
         }
 
         private  TemplateObject HighBeamLightSymbol()

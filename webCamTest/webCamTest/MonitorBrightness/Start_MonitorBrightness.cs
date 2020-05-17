@@ -52,8 +52,8 @@ namespace webCamTest.MonitorBrightness
                         Console.WriteLine(x.Message);
                     }
                 }
-                //10 minutes
-                Thread.Sleep(600000);
+                //1 minutes
+                Thread.Sleep(60000);
             }
         }
     }
