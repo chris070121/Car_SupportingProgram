@@ -12,6 +12,7 @@ using System.Text;
 using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
 using webCamTest.Gauges;
+using webCamTest.MapsEmulator;
 
 namespace webCamTest
 {
@@ -35,6 +36,7 @@ namespace webCamTest
 
         private OpenCvVersion openCvVersionReverse;
         private Start_MonitorBrightness start_MonitorBrightness;
+        private EmulatorScreenCapture emulatorScreenCapture;
 
         public Form1()
         {
@@ -51,7 +53,6 @@ namespace webCamTest
 
             CaptureLeftGaugeBtn.Visible = false;
             CaptureBottomMiddletGaugeBtn.Visible = false;
-            CaptureTopMiddletGaugeBtn.Visible = false;
             CaptureRightGaugeBtn.Visible = false;
 
             reverseCamPicBx.Visible = true;
@@ -76,7 +77,6 @@ namespace webCamTest
 
                 CaptureLeftGaugeBtn.Visible = true;
                 CaptureBottomMiddletGaugeBtn.Visible = true;
-                CaptureTopMiddletGaugeBtn.Visible = true;
 
                 CaptureRightGaugeBtn.Visible = true;
                 leftGuagePicBx.Visible = true;
@@ -93,7 +93,6 @@ namespace webCamTest
 
                 CaptureLeftGaugeBtn.Visible = false;
                 CaptureBottomMiddletGaugeBtn.Visible = false;
-                CaptureTopMiddletGaugeBtn.Visible = false;
 
                 CaptureRightGaugeBtn.Visible = false;
                 leftGuagePicBx.Visible = false;
@@ -108,18 +107,20 @@ namespace webCamTest
         Start_MovingWindows movingWindows;
         private void Form1_Load(object sender, EventArgs e)
         {
-            ////Moving Windows
-            //movingWindows = new Start_MovingWindows();
-            //movingWindows.StartMovingWindows();
+
+
+            //Start Emulator
+            emulatorScreenCapture = new EmulatorScreenCapture();
+            emulatorScreenCapture.beginProgam();
 
             ReadSettingsFile();
+
 
             //Start Streming Gauges
             SetUpReverseCameraPicBx();
             openCvVersionLeft = new OpenCvVersion("Left", LeftGaugeIndex, leftGuagePicBx, this);
             openCvVersionRight = new OpenCvVersion("Right", RightGaugeIndex, rightGuagePicBx,this);
             openCvVersionBottomMiddle = new OpenCvVersion("BottomMiddle", BottomMiddleGaugeIndex, bottomMiddleGuagePicBx, this);
-           // openCvVersionTopMiddle = new OpenCvVersion("TopMiddle", TopMiddleGaugeIndex, topMiddleGuagePicBx, this);
             openCvVersionReverse = new OpenCvVersion("Reverse", ReversCamera, reverseCamPicBx, this);
 
             ////Start Brightness Monitoring
@@ -127,11 +128,19 @@ namespace webCamTest
             start_MonitorBrightness = new Start_MonitorBrightness();
             start_MonitorBrightness.StartMonitorBrightness(windowHandle, morningTime, eveningTime);
 
+            //Start GaugeSymbol Window
             gaugeSymbolForm = new GaugeSymbols();
             gaugeSymbolForm.Show();
 
+
+            //Moving Windows
+            movingWindows = new Start_MovingWindows();
+            movingWindows.StartMovingWindows();
+            movingWindows.emulatorName = emulatorScreenCapture.emulatorName;
+
             Thread thread = new Thread(SendMessagesAndUpdateGUI);
             thread.Start();
+
 
         }
       
@@ -179,7 +188,7 @@ namespace webCamTest
             while (true)
             {
                 try
-                {
+                { 
                     string sendMes = openCvVersionLeft.message + " , " + openCvVersionRight.message + " , " +
                                                                                                        openCvVersionBottomMiddle.message + " , "  + start_MonitorBrightness.msg;
                     if (openCvVersionBottomMiddle.message.Contains("LowLightSymbol"))
@@ -200,7 +209,14 @@ namespace webCamTest
                         gaugeSymbolForm.SetBitmap(openCvVersionBottomMiddle.croppedBitmap);
                     }
 
-                    bool isVisible = leftGuagePicBx.Visible;
+                    if (emulatorScreenCapture.finalBitmap != null)
+                    {
+                        Bitmap x = (Bitmap) emulatorScreenCapture.finalBitmap.Clone();
+                        gaugeSymbolForm.SetBitmapForMap(x);
+                    }
+
+
+                        bool isVisible = leftGuagePicBx.Visible;
                     if ( isVisible && openCvVersionLeft.finalImage != null)
                     {
 
@@ -215,13 +231,7 @@ namespace webCamTest
                             rightGuagePicBx.Image = openCvVersionRight.finalImage;
 
                         });
-/*
-                        topMiddleGuagePicBx.BeginInvoke((Action)delegate
-                        {
-                            topMiddleGuagePicBx.Image = openCvVersionTopMiddle.finalImage;
-
-                        });*/
-
+                  
                         bottomMiddleGuagePicBx.BeginInvoke((Action)delegate
                         {
                             bottomMiddleGuagePicBx.Image = openCvVersionBottomMiddle.finalImage;
@@ -232,13 +242,17 @@ namespace webCamTest
                     }
                     else
                     {
+
                       
-                            reverseCamPicBx.Invoke((Action)delegate
-                            {
-                                reverseCamPicBx.Image = openCvVersionReverse.finalImage;
-                            });
-                        
+                        reverseCamPicBx.Invoke((Action)delegate
+                        {
+                            reverseCamPicBx.Image = openCvVersionReverse.finalImage;
+                        });
+                        Thread.Sleep(10);
+
+
                     }
+               
                 }
                 catch(Exception ex)
                 {
@@ -353,9 +367,20 @@ namespace webCamTest
             openCvVersionBottomMiddle.takePic = true;
         }
 
-        private void CaptureTopMiddletGaugeBtn_Click(object sender, EventArgs e)
+        bool isMapOn = false;
+        private void MapsButton_Click(object sender, EventArgs e)
         {
-            //openCvVersionTopMiddle.takePic = true;
+            if(isMapOn)
+            {
+                gaugeSymbolForm.TurnMapOn(isMapOn);
+                isMapOn = false;
+            }
+            else
+            {
+                gaugeSymbolForm.TurnMapOn(isMapOn);
+                isMapOn = true;
+            }
+
         }
     }
 }

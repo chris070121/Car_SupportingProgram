@@ -37,103 +37,86 @@ namespace webCamTest.MovingWindows
         [DllImport("user32.dll")]
         static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
 
-
+        IntPtr chromeHandle;
+        IntPtr spotifyHandle;
+        IntPtr macroBtnHandle;
+        IntPtr androidEmulatorHandle;
+        public string emulatorName;
 
         // Call this way:
         private void MoveWindowsIfHasFocus()
         {
+            bool foundAll = false;
+            while (foundAll == false)
+            {
+                Process[] localAll1 = Process.GetProcesses();
+                IntPtr a = new IntPtr();
+                foreach (Process proc in localAll1)
+                {
+                    a = proc.MainWindowHandle;
+
+                    if (proc.MainWindowTitle.Contains("Chrome"))
+                    {
+                        chromeHandle = a;
+                    }
+
+
+                    if (proc.MainWindowTitle.Contains("Spotify"))
+                    {
+                        spotifyHandle = a;
+                    }
+                    if (proc.MainWindowTitle.Contains("Macro"))
+                    {
+                        macroBtnHandle = a;
+                    }
+                    if (proc.MainWindowTitle.Contains("Android Emulator - " + emulatorName + ":5554"))
+                    {
+                        androidEmulatorHandle = a;
+                    }
+                }
+                if (chromeHandle != null && spotifyHandle != null && macroBtnHandle != null && androidEmulatorHandle.ToInt32() != 0x00000000)
+                {
+                    foundAll = true;
+                }
+            }
+
+            Screen[] allScreens = Screen.AllScreens;
+            Rectangle workingRectangle = new Rectangle();
+            workingRectangle = Screen.PrimaryScreen.WorkingArea;
+
             while (true)
             {
                 try
                 {
-                    int chars = 256;
-                    StringBuilder buff = new StringBuilder(chars);
-                    IntPtr handle = GetForegroundWindow();
+                    //int chars = 256;
+                    //StringBuilder buff = new StringBuilder(chars);
+                    //IntPtr handle = GetForegroundWindow();
 
-                    string RET = "";
-                    if (handle != null)
-                    {
-                        if (GetWindowText(handle, buff, chars) > 0)
-                        {
-                            RET = buff.ToString() + "\n";
-                            //listBox2.Items.Add(handle.ToString());                   
-                        }
-                    }
-
-                    //if (RET.Contains("desktop-head-unit"))
+                    //string RET = "";
+                    //if (handle != null)
                     //{
-                    //    ShowWindow(handle, 2);
-
+                    //    if (GetWindowText(handle, buff, chars) > 0)
+                    //    {
+                    //        RET = buff.ToString() + "\n";
+                    //        //listBox2.Items.Add(handle.ToString());                   
+                    //    }
                     //}
+                        
+                    MoveWindow(chromeHandle, 295, 0, (workingRectangle.Width - 275), workingRectangle.Height + 10, true);
+              
+                    MoveWindow(spotifyHandle, 300, 0, (workingRectangle.Width - 275), workingRectangle.Height + 0, true);
+                        
+                    MoveWindow(macroBtnHandle, -10, 0, (320), workingRectangle.Height + 10, true);
 
-                    //if (RET.Contains("Android Auto - Desktop Head Unit"))
-                    //{
-                    //    Rectangle workingRectangle = Screen.PrimaryScreen.WorkingArea;
-                    //    MoveWindow(handle, -20, -30, (workingRectangle.Width + 40), workingRectangle.Height + 50, false);
-                    //}
+                    MoveWindow(androidEmulatorHandle, -10, -30, workingRectangle.Width + 150, workingRectangle.Height+ 40, true);
 
-                    //else
-                    //{
-                        Screen[] allScreens = Screen.AllScreens;
-                        Rectangle workingRectangle = new Rectangle();
-
-                        Process[] localAll1 = Process.GetProcesses();
-                        IntPtr a = new IntPtr();
-                        foreach (Process proc in localAll1)
-                        {
-                            a = proc.MainWindowHandle;
-
-                            //if (proc.MainWindowTitle == "Android Auto - Desktop Head Unit")
-                            //{
-                            //    foreach (Screen x in allScreens)
-                            //    {
-                            //        if (x.Primary == false)
-                            //        {
-                            //            workingRectangle = x.WorkingArea;
-                            //            break;
-                            //        }
-                            //    }
-                            //    MoveWindow(a, -3850, -35, workingRectangle.Width + 30, workingRectangle.Height + 50, true);
-                            //}
-                           
-
-                            workingRectangle = Screen.PrimaryScreen.WorkingArea;
-
-                            if (proc.MainWindowTitle.Contains("Chrome"))
-                            {
-                                MoveWindow(a, 295, 0, (workingRectangle.Width - 275), workingRectangle.Height + 10, true);
-                            }
-
-                            if (proc.MainWindowTitle.Contains("CarSuppProgram"))
-                            {
-                       
-
-                        }
-
-
-                            //if (proc.MainWindowTitle.Contains("Camera"))
-                            //{
-                            //    MoveWindow(a, 295, -10, (workingRectangle.Width - 275), workingRectangle.Height + 20, true);
-                            //}
-
-                            if (proc.MainWindowTitle.Contains("Spotify"))
-                            {
-                                MoveWindow(a, 304, 0, (workingRectangle.Width - 275), workingRectangle.Height + 0, true);
-                            }
-                            if (proc.MainWindowTitle.Contains("Macro"))
-                            {
-                                MoveWindow(a, -10, 0, (325), workingRectangle.Height + 10, true);
-                            }
-
-                      //  }
-                    }
-                    //Console.Write(RET);
+                    Thread.Sleep(5000);
                 }
                 catch
                 {
                     Console.Write("NO Windows Active");
                 }
-                //Thread.Sleep(1000);
+              
             }
         }
 
@@ -144,8 +127,8 @@ namespace webCamTest.MovingWindows
             Thread a = new Thread(MoveWindowsIfHasFocus);
             a.Start();
 
-            StartProgramAndMoveIt("chrome");
-            StartProgramAndMoveIt("Spotify");
+            //StartProgramAndMoveIt("chrome");
+            //StartProgramAndMoveIt("Spotify");
 
 
             //while (true)

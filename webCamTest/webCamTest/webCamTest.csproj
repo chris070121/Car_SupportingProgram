@@ -84,12 +84,7 @@
     <Compile Include="Gauges\GaugeSymbols.Designer.cs">
       <DependentUpon>GaugeSymbols.cs</DependentUpon>
     </Compile>
-    <Compile Include="Gauges\GaugeInfo.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Gauges\GaugeInfo.Designer.cs">
-      <DependentUpon>GaugeInfo.cs</DependentUpon>
-    </Compile>
+    <Compile Include="MapsEmulator\EmulatorScreenCapture.cs" />
     <Compile Include="MonitorBrightness\BrightnessController.cs" />
     <Compile Include="MonitorBrightness\Start_MonitorBrightness.cs" />
     <Compile Include="MovingWindows\Start_MovingWindows.cs" />
@@ -111,9 +106,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Gauges\GaugeSymbols.resx">
       <DependentUpon>GaugeSymbols.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Gauges\GaugeInfo.resx">
-      <DependentUpon>GaugeInfo.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

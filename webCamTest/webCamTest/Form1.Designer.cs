@@ -36,7 +36,7 @@
             this.CaptureRightGaugeBtn = new System.Windows.Forms.Button();
             this.rightGuagePicBx = new System.Windows.Forms.PictureBox();
             this.reverseCamPicBx = new System.Windows.Forms.PictureBox();
-            this.CaptureTopMiddletGaugeBtn = new System.Windows.Forms.Button();
+            this.mapsButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.leftGuagePicBx)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.bottomMiddleGuagePicBx)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.rightGuagePicBx)).BeginInit();
@@ -63,7 +63,7 @@
             // 
             // CaptureLeftGaugeBtn
             // 
-            this.CaptureLeftGaugeBtn.Location = new System.Drawing.Point(123, 2);
+            this.CaptureLeftGaugeBtn.Location = new System.Drawing.Point(332, 2);
             this.CaptureLeftGaugeBtn.Name = "CaptureLeftGaugeBtn";
             this.CaptureLeftGaugeBtn.Size = new System.Drawing.Size(128, 23);
             this.CaptureLeftGaugeBtn.TabIndex = 2;
@@ -81,7 +81,7 @@
             // 
             // CaptureBottomMiddletGaugeBtn
             // 
-            this.CaptureBottomMiddletGaugeBtn.Location = new System.Drawing.Point(269, 2);
+            this.CaptureBottomMiddletGaugeBtn.Location = new System.Drawing.Point(466, 2);
             this.CaptureBottomMiddletGaugeBtn.Name = "CaptureBottomMiddletGaugeBtn";
             this.CaptureBottomMiddletGaugeBtn.Size = new System.Drawing.Size(155, 23);
             this.CaptureBottomMiddletGaugeBtn.TabIndex = 4;
@@ -91,7 +91,7 @@
             // 
             // CaptureRightGaugeBtn
             // 
-            this.CaptureRightGaugeBtn.Location = new System.Drawing.Point(640, 2);
+            this.CaptureRightGaugeBtn.Location = new System.Drawing.Point(627, 2);
             this.CaptureRightGaugeBtn.Name = "CaptureRightGaugeBtn";
             this.CaptureRightGaugeBtn.Size = new System.Drawing.Size(128, 23);
             this.CaptureRightGaugeBtn.TabIndex = 5;
@@ -115,22 +115,22 @@
             this.reverseCamPicBx.TabIndex = 7;
             this.reverseCamPicBx.TabStop = false;
             // 
-            // CaptureTopMiddletGaugeBtn
+            // mapsButton
             // 
-            this.CaptureTopMiddletGaugeBtn.Location = new System.Drawing.Point(468, 2);
-            this.CaptureTopMiddletGaugeBtn.Name = "CaptureTopMiddletGaugeBtn";
-            this.CaptureTopMiddletGaugeBtn.Size = new System.Drawing.Size(140, 23);
-            this.CaptureTopMiddletGaugeBtn.TabIndex = 8;
-            this.CaptureTopMiddletGaugeBtn.Text = "CaptureTopMiddleGauge";
-            this.CaptureTopMiddletGaugeBtn.UseVisualStyleBackColor = true;
-            this.CaptureTopMiddletGaugeBtn.Click += new System.EventHandler(this.CaptureTopMiddletGaugeBtn_Click);
+            this.mapsButton.Location = new System.Drawing.Point(141, 2);
+            this.mapsButton.Name = "mapsButton";
+            this.mapsButton.Size = new System.Drawing.Size(75, 23);
+            this.mapsButton.TabIndex = 8;
+            this.mapsButton.Text = "MAPS";
+            this.mapsButton.UseVisualStyleBackColor = true;
+            this.mapsButton.Click += new System.EventHandler(this.MapsButton_Click);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1228, 602);
-            this.Controls.Add(this.CaptureTopMiddletGaugeBtn);
+            this.Controls.Add(this.mapsButton);
             this.Controls.Add(this.reverseCamPicBx);
             this.Controls.Add(this.rightGuagePicBx);
             this.Controls.Add(this.CaptureRightGaugeBtn);
@@ -161,7 +161,7 @@
         private System.Windows.Forms.Button CaptureRightGaugeBtn;
         private System.Windows.Forms.PictureBox rightGuagePicBx;
         private System.Windows.Forms.PictureBox reverseCamPicBx;
-        private System.Windows.Forms.Button CaptureTopMiddletGaugeBtn;
+        private System.Windows.Forms.Button mapsButton;
     }
 }
 

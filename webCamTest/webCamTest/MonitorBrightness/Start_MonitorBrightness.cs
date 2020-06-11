@@ -53,7 +53,7 @@ namespace webCamTest.MonitorBrightness
                     }
                 }
                 //1 minutes
-                Thread.Sleep(60000);
+                Thread.Sleep(5000);
             }
         }
     }

@@ -51,13 +51,14 @@ namespace webCamTest.ScreenCompare
 
             frame = new Mat();
             capture = new VideoCapture(camIndex);
-          //  capture.Fps = 30;
+            //  capture.Fps = 30;
             ////opens a settings window for the cameras
-
             if (name == "Left")
             {
-              //  capture.Settings = 1;
-
+              
+                    capture.Exposure = -6;
+                    capture.Brightness = -64;
+          
             }
             try
             {
@@ -85,11 +86,7 @@ namespace webCamTest.ScreenCompare
                     }
                     capture.Read(frame);
                     image = BitmapConverter.ToBitmap(frame);
-                    if (takePic)
-                    {
-                        screenCompare.CaptureOrigImage(image, name);
-                        takePic = false;
-                    }
+                  
                     if(name!="Reverse" && name != "BottomMiddle")
                     {
                         image.RotateFlip(RotateFlipType.Rotate90FlipNone);
@@ -98,6 +95,11 @@ namespace webCamTest.ScreenCompare
                     {
                         image.RotateFlip(RotateFlipType.Rotate180FlipNone);
 
+                    }
+                    if (takePic)
+                    {
+                        screenCompare.CaptureOrigImage(image, name);
+                        takePic = false;
                     }
                     ProcessFrames(image);
                 }
@@ -116,12 +118,22 @@ namespace webCamTest.ScreenCompare
             {
                 try
                 {
+                    if (name == "BottomMiddle")
+                    {
+                        croppedBitmap = CropImage(bitmap);
+                    }
+
                     if (counter % 2 == 0 && name != "Reverse")
                     {
                         screenCompare.findImage(name, bitmap, out imageToShow, out temp);
                         message = temp;
 
                     }
+                    //if(name == "BottomMiddle")
+                    //{
+                    //    screenCompare.findImage(name, bitmap, out imageToShow, out temp);
+                    //    message = temp;
+                    //}
                     else
                     {
                         imageToShow = bitmap;
@@ -129,24 +141,7 @@ namespace webCamTest.ScreenCompare
                     if (imageToShow != null)
                     {
                         finalImage = (Bitmap)imageToShow.Clone();
-                        if (name == "BottomMiddle")
-                        {
-                            croppedBitmap = CropImage((Bitmap)imageToShow.Clone());
-                        }
-                    }
-                    if (name == "BottomMiddle")
-                    {
-                        //croppedBitmap = CropImage((Bitmap)imageToShow.Clone());
-                        //    //var Ocr = new IronOcr.AdvancedOcr();
-                        //    //Ocr.CleanBackgroundNoise = true;
-                        //    //Ocr.DetectWhiteTextOnDarkBackgrounds = true;
-                        //    //Ocr.EnhanceContrast = true;
-                        //    //Ocr.EnhanceResolution = true;
-                        //    //var Result = Ocr.Read(@"C:\Users\chris\Desktop\Car_SupportingProgram\webCamTest\webCamTest\bin\Debug\oilLife.png");
-                        //    //string temp1 = Regex.Replace(Result.Text, "[^a-zA-Z][^0-9]", " ");
-                        //    //Console.WriteLine(temp1);
-                        //    //// CropAndSendBitmap.SendBitmap();
-                        //    //concurrentDictionary.AddOrUpdate(name, imageToShow, (name, imageToShow)=>imageToShow);
+                     
                     }
                 }
                 catch(Exception ex)
@@ -162,10 +157,6 @@ namespace webCamTest.ScreenCompare
                 {
                     counter++;
                 }
-
-                //Console.WriteLine(message);
-
-
             }
          
         }
@@ -173,7 +164,7 @@ namespace webCamTest.ScreenCompare
         {
            // Rec{ X = 88 Y = 179 Width = 43 Height = 65}
            // Rectangle croppedrectangle = new Rectangle(match.X - 20, match.Y - 20, match.Width + 350, match.Height + 200);
-            Rectangle croppedRect = new Rectangle(210, 160, 320, 220);
+            Rectangle croppedRect = new Rectangle(210, 175, 300, 190);
             int width = Math.Abs(croppedRect.Width);
             int heigh = Math.Abs(croppedRect.Height);
             Bitmap nb = new Bitmap(width, heigh);

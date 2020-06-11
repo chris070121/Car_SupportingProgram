@@ -265,7 +265,6 @@ C:\Users\Chris Davis\Desktop\Car_SupportingProgram\webCamTest\webCamTest\obj\Deb
 C:\Users\chris\Desktop\test\Car_SupportingProgram\webCamTest\webCamTest\obj\Debug\webCamTest.csprojAssemblyReference.cache
 C:\Users\chris\Desktop\test\Car_SupportingProgram\webCamTest\webCamTest\obj\Debug\webCamTest.Form1.resources
 C:\Users\chris\Desktop\test\Car_SupportingProgram\webCamTest\webCamTest\obj\Debug\webCamTest.Gauges.GaugeSymbols.resources
-C:\Users\chris\Desktop\test\Car_SupportingProgram\webCamTest\webCamTest\obj\Debug\webCamTest.Gauges.GaugeInfo.resources
 C:\Users\chris\Desktop\test\Car_SupportingProgram\webCamTest\webCamTest\obj\Debug\webCamTest.Properties.Resources.resources
 C:\Users\chris\Desktop\test\Car_SupportingProgram\webCamTest\webCamTest\obj\Debug\webCamTest.csproj.GenerateResource.cache
 C:\Users\chris\Desktop\test\Car_SupportingProgram\webCamTest\webCamTest\obj\Debug\webCamTest.csproj.CoreCompileInputs.cache

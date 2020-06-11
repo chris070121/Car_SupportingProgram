@@ -25,7 +25,7 @@ namespace webCamTest
                     if (source != null && File.Exists(templateObject.filepath))
                     {
                         Bitmap x = new Bitmap(templateObject.filepath);
-                        x.RotateFlip(RotateFlipType.Rotate90FlipNone);
+                        //x.RotateFlip(RotateFlipType.Rotate90FlipNone);
                         Image<Bgr, byte> template = new Image<Bgr, byte>(x);
 
 
@@ -36,7 +36,7 @@ namespace webCamTest
                             result.MinMax(out minValues, out maxValues, out minLocations, out maxLocations);
                             if (templateObject.filepath.Contains("LowLightSymbol"))
                             {
-                                if (maxValues[0] >= .5)
+                                if (maxValues[0] >= .4)
                                 {
                                     // This is a match. Do something with it, for example draw a rectangle around it.
                                     Rectangle match = new Rectangle(maxLocations[0], template.Size);
